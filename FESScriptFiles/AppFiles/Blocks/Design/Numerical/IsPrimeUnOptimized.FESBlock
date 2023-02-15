@@ -1,0 +1,16 @@
+U19
+T1
+L0|0|Is Prime Old
+I0|1
+O1|4
+END
+double y = 2;
+O1 = false;
+while (std::fmod(I0,y) != 0) 
+{
+    y = y + 1;
+}
+if (I0 == y) 
+{
+    O1 = true;
+}

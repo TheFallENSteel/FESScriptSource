@@ -1,0 +1,15 @@
+﻿<UserControls:UserControlPlus x:Class="FESScript2.Graphics.UserControls.SubUserControls.BlockBackground"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FESScript2.Graphics.UserControls.SubUserControls"
+             xmlns:UserControls="clr-namespace:FESScript2.Graphics.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="25" d:DesignWidth="350">
+    <Grid>
+        <Border x:Name="border2" CornerRadius="7.5" d:Background="Green">
+            <Border x:Name="border1" CornerRadius="7.5" d:Background="Green"  d:BorderBrush="Gray" d:BorderThickness="5" Margin="-1"></Border>
+        </Border>
+    </Grid>
+</UserControls:UserControlPlus>

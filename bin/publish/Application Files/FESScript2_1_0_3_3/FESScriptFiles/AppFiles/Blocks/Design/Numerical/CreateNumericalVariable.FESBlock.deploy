@@ -1,0 +1,10 @@
+U12
+T1
+L2|0|Variable
+BD0|1|
+L3|2|=
+BD2|3|
+I0|0
+O0|0
+FU
+double long $B0 = $B2 ;

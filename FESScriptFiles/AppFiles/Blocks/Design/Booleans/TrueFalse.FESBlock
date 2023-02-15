@@ -1,0 +1,14 @@
+U7
+T4
+L0|0|True
+C1|1|Haha
+O0|4
+END
+if(C1) 
+{
+    O0 = true;
+}
+else 
+{
+    O0 = false;
+}

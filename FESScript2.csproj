@@ -1,0 +1,149 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <PackageId>FESScript</PackageId>
+    <Authors>Martin Komárek</Authors>
+    <Company>FESScript</Company>
+    <Product>FESScript</Product>
+    <UseWindowsForms>False</UseWindowsForms>
+    <AnalysisLevel>none</AnalysisLevel>
+    <ApplicationIcon>FES.ico</ApplicationIcon>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <EnforceCodeStyleInBuild>False</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+    <FileAlignment>512</FileAlignment>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <FileAlignment>512</FileAlignment>
+    <Optimize>False</Optimize>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="bin\**" />
+    <EmbeddedResource Remove="bin\**" />
+    <None Remove="bin\**" />
+    <Page Remove="bin\**" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Basics\Start.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Basics\WhileLoop.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Booleans\CreateBooleanVariable.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Booleans\IfElse.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Booleans\SetValueOfBooleanVariable.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Booleans\TrueFalse.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Booleans\UseBooleanVariable.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Console\ConsoleReadLine.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Console\ConsoleWriteLine.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\ConvertToNumber.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\CreateNumericalVariable.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\EqualNum.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\IsPrime.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\IsPrimeUnOptimized.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\NumericalOperations.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\SetValue.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\UseNumericalVariable.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\UseValue.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\ConvertToString.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\CreateTextualVariable.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\SetValueOfTextualVariable.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\TextAdd.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\UseText.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\UseTextualVariable.FESBlock">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="FES.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FESScriptFiles\AppFiles\Blocks\Precompiled\" />
+    <Folder Include="FESScriptFiles\AppFiles\Projects\" />
+  </ItemGroup>
+
+</Project>

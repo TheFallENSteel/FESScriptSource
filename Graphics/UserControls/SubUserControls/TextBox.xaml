@@ -1,0 +1,14 @@
+﻿<UserControls:UserControlPlus x:Class="FESScript2.Graphics.UserControls.SubUserControls.TextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FESScript2.Graphics.UserControls.SubUserControls"
+             xmlns:UserControls="clr-namespace:FESScript2.Graphics.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="25" d:DesignWidth="150" IsManipulationEnabled="True">
+    <Grid Height="25" Width="auto">
+        <local:BlockBackground Fill="White" Stroke="Gray" StrokeThickness="2"></local:BlockBackground>
+        <TextBox MinWidth="25" MaxLines="1" x:Name="textBox" Margin="7.5, 5" VerticalAlignment="Center" Style="{StaticResource TextsControl1}"/>
+    </Grid>
+</UserControls:UserControlPlus>

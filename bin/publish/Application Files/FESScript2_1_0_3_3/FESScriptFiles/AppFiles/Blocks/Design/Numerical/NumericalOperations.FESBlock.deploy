@@ -1,0 +1,45 @@
+U2
+T1
+L0|0|Use operator
+H|#include <cmath>
+M0|1|&+|-|*|/|%
+I0|1
+I1|1
+O0|1
+END
+if(M0 == "+") 
+{
+    O0 = I0 + I1;
+}
+else if(M0 == "-")
+{
+    O0 = I0 - I1;
+}
+else if(M0 == "*")
+{
+    O0 = I0 * I1;
+}
+else if(M0 == "/")
+{
+    if (I1 == 0) 
+    {
+        std::cout << "Can not divide by zero." << std::endl;
+        throw 0;
+    }
+    else 
+    {
+        O0 = I0 / I1;   
+    }
+}
+else if(M0 == "%")
+{
+    if (I1 == 0) 
+    {
+        std::cout << "Can not divide by zero." << std::endl;
+        throw 0;
+    }
+    else 
+    {
+        O0 = std::fmod(I0,I1); 
+    }
+}

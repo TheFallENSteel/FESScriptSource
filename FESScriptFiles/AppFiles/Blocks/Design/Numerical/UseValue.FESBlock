@@ -1,0 +1,7 @@
+U1
+T1
+L0|0|Use Number
+B0|1|
+O0|1
+END
+O0 = std::stold(B0);
