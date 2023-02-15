@@ -1,8 +1,0 @@
-U24
-T2
-L0|0|Add two texts
-I0|2
-I1|2
-O0|2
-END
-O0 = I0 + I1;

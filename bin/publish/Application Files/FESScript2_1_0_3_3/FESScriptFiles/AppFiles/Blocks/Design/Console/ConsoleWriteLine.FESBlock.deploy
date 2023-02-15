@@ -1,8 +1,0 @@
-U3
-T3
-L0|0|Write to console
-I0|0
-O0|0
-I1|2
-END
-std::cout << I1 << std::endl;

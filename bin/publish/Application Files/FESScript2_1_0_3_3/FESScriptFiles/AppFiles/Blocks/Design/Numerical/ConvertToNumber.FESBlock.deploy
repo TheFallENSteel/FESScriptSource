@@ -1,7 +1,0 @@
-U4
-T1
-L0|0|Convert to number
-O0|1
-I0|2
-END
-O0 = std::stold(I0);
