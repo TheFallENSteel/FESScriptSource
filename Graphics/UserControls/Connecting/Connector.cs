@@ -112,37 +112,42 @@ namespace FESScript2.Graphics.UserControls
             {
                 return dot1;
             }
+            return null;
+        }
+
+        /// <returns>Returns <see cref="true"/> if connection was completed.</returns>
+
+        public bool AddDot(Dots dot) 
+        {
+            if (dot1 == null) 
+            {
+                this.dot1 = dot;
+                return false;
+            }
+            else if (dot2 == null && CanConnect(dot1, dot) && dot1.connection == null) 
+            {
+                if (dot.connection != null && dot.connection.isConnected) 
+                {
+                    dot.connection.BreakConnection();
+                }
+                dot2 = dot;
+                MakeConnection();
+                return true;
+            }
             else 
             {
-                return null;
+                RemoveFromConnection(dot1);
+                AddDot(dot);
+                return true;
             }
         }
 
-public bool AddDot(Dots dot) 
-{
-    if (dot1 == null) 
-    {
-        this.dot1 = dot;
-    }
-    else if (dot2 == null && dot1.io != dot.io && (dot1.io != IO.Error || dot.io != IO.Error) && (dot1.DotType == dot.DotType || (dot1.DotType == SubUserControls.Type.Action && dot.DotType == SubUserControls.Type.SubAction) || (dot1.DotType == SubUserControls.Type.SubAction && dot.DotType == SubUserControls.Type.Action)) && dot1.connection == null) 
-    {
-        if (dot.connection != null) 
+        private bool CanConnect(Dots dot1, Dots dot) 
         {
-            if (dot.connection.isConnected)
-            {
-                dot.connection.BreakConnection();
-            }
+            return dot1.IO != dot.IO
+                && dot1.IO != IO.Error && dot.IO != IO.Error
+                && (dot1.DotType != dot.DotType
+                || dot1.DotType.IsCompatible(dot.DotType));
         }
-        dot2 = dot;
-        MakeConnection();
-        return true;
-    }
-    else if (dot2 == null && (dot1.io != IO.Error || dot.io != IO.Error) && ((dot1.DotType != dot.DotType && !(dot1.DotType == SubUserControls.Type.Action && dot.DotType == SubUserControls.Type.SubAction) && !(dot1.DotType == SubUserControls.Type.SubAction && dot.DotType == SubUserControls.Type.Action)) || dot1.io != dot.io) && dot1.connection == null)
-    {
-        RemoveFromConnection(dot1);
-        AddDot(dot);
-    }
-    return false;
-}
     }
 }

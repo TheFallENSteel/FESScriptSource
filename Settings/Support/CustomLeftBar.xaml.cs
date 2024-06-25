@@ -29,7 +29,12 @@ namespace FESScript2.Settings.Support
 
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ((Window)((Grid)this.Parent).Parent).DragMove();
+            CurrentWindow.DragMove();
+        }
+
+        private Window CurrentWindow 
+        {
+            get => ((Window)((Grid)this.Parent).Parent);
         }
     }
 }

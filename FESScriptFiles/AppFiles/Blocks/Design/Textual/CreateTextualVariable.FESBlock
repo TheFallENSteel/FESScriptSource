@@ -1,10 +1,10 @@
 U16
 T2
-L2|0|Variable
-BD0|1|
-L3|2|=
-BD2|3|
+L5|0|Variable
+BD2|1|
+L4|2|=
+BD3|3|
 I0|0
-O0|0
+O1|0
 FU
-std::string $B0 = " $B2 ";
+std::string $B2 = " $B3 ";

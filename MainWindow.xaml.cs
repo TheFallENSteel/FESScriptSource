@@ -68,6 +68,8 @@ namespace FESScript2
 
         private static string saveName;
 
+        public const double Version = 3.0;
+
         private Point cameraPosition;
         /// <summary>
         /// Main Console of the application.
@@ -201,7 +203,7 @@ namespace FESScript2
             if (e.MiddleButton == MouseButtonState.Pressed || e.RightButton == MouseButtonState.Pressed)
             {
                 Mouse.Capture(this);
-                Offset = e.GetPosition((UIElement)this);
+                Offset = e.GetPosition(this);
                 MiddleMouseClicked = true;
             }
         }

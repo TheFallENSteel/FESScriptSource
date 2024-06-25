@@ -22,17 +22,17 @@ namespace FESScript2.CodeWorks.Transpiler
             string IOs = "";
             List<Graphics.UserControls.SubUserControls.DotsType> dotsInp = new List<Graphics.UserControls.SubUserControls.DotsType>();
             List<Graphics.UserControls.SubUserControls.DotsType> dotsOut = new List<Graphics.UserControls.SubUserControls.DotsType>();
-            for (int i = 0; i < blockType.dots.Count; i++) 
+            for (int i = 0; i < blockType.Dots.Count; i++) 
             {
-                if (blockType.dots[i].dotType != Graphics.UserControls.SubUserControls.Type.Action && blockType.dots[i].dotType != Graphics.UserControls.SubUserControls.Type.SubAction) 
+                if (blockType.Dots[i].dotType != Graphics.UserControls.SubUserControls.Type.Action && blockType.Dots[i].dotType != Graphics.UserControls.SubUserControls.Type.SubAction) 
                 { 
-                    if (blockType.dots[i].io == Graphics.UserControls.SubUserControls.IO.Input)
+                    if (blockType.Dots[i].io == Graphics.UserControls.SubUserControls.IO.Input)
                     {
-                        dotsInp.Add(blockType.dots[i]);
+                        dotsInp.Add(blockType.Dots[i]);
                     }
-                    else if (blockType.dots[i].io == Graphics.UserControls.SubUserControls.IO.Output) 
+                    else if (blockType.Dots[i].io == Graphics.UserControls.SubUserControls.IO.Output) 
                     {
-                        dotsOut.Add(blockType.dots[i]);
+                        dotsOut.Add(blockType.Dots[i]);
                     }
                 }
             }
@@ -79,17 +79,17 @@ namespace FESScript2.CodeWorks.Transpiler
                 }
             }
 
-            for (int i = 0; i < blockType.contents.Count; i++)
+            for (int i = 0; i < blockType.Contents.Count; i++)
             {
-                if (!blockType.contents[i].isCompiler)
+                if (!blockType.Contents[i].isCompiler)
                 {
-                    if (blockType.contents[i].type == typeof(Graphics.UserControls.SubUserControls.TextBox) || blockType.contents[i].type == typeof(Graphics.UserControls.SubUserControls.Combobox))
+                    if (blockType.Contents[i].type == typeof(Graphics.UserControls.SubUserControls.TextBox) || blockType.Contents[i].type == typeof(Graphics.UserControls.SubUserControls.Combobox))
                     {
-                        IOs += $"std::string {blockType.contents[i].Name};\n";
+                        IOs += $"std::string {blockType.Contents[i].Name};\n";
                     }
-                    else if (blockType.contents[i].type == typeof(Graphics.UserControls.SubUserControls.Checkbox))
+                    else if (blockType.Contents[i].type == typeof(Graphics.UserControls.SubUserControls.Checkbox))
                     {
-                        IOs += $"bool {blockType.contents[i].Name};\n";
+                        IOs += $"bool {blockType.Contents[i].Name};\n";
                     }
                 }
             }
@@ -100,7 +100,7 @@ namespace FESScript2.CodeWorks.Transpiler
 {{
     {inputInit}
 }}
-{(blockType.singleActionOutput ? "void" : "int")} {blockType.Name}::Run()
+{(blockType.SingleActionOutput ? "void" : "int")} {blockType.Name}::Run()
 {{
 	try
 	{{
@@ -118,7 +118,7 @@ class {blockType.Name}
 public:
     {IOs}
     {blockType.Name}({constructor});
-    {(blockType.singleActionOutput ? "void" : "int")} Run();
+    {(blockType.SingleActionOutput ? "void" : "int")} Run();
 }};";
 
             GenerateFullCpp.templateCpp.Add(templateCpp);

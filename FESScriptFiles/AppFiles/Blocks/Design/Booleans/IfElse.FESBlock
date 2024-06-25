@@ -1,10 +1,10 @@
 U6
 T4
-L0|0|If else
+L4|0|If else
 I0|0
 I1|4
-O0|0
-O1|0
+O2|0
+O3|0
 END
 if(I1) 
 {

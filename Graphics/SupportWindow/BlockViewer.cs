@@ -87,7 +87,7 @@ namespace FESScript2.Graphics.SupportWindow
             }
             else if (isShown) 
             {
-                Hide();
+                Hide(false);
             }
             else 
             {
@@ -96,7 +96,7 @@ namespace FESScript2.Graphics.SupportWindow
             isShown = !isShown;
         }
 
-        public void Hide(bool showAfter = false) 
+        public void Hide(bool showAfter) 
         {
             storyboardSecondPanel.Stop();
             if (showAfter) 

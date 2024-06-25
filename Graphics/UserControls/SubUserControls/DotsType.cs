@@ -6,7 +6,7 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
 {
 
     /// <summary>
-    /// Struct ro reconstruct dots.
+    /// Struct to reconstruct dots.
     /// </summary>
 
     public struct DotsType : CodeWorks.IName
@@ -14,25 +14,7 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
         public Type dotType;
         public IO io;
         public bool isConditional;
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
-        private int id;
-
-        public string Name
-        {
-            get
-            {
-                return (io == IO.Input ? "I" : (io == IO.Output ? "O" : "E")) + Id;
-            }
-        }
+        public int ID {  get; set; }
+        public string Name { get => (io == IO.Input ? "I" : (io == IO.Output ? "O" : "E")) + ID; }
     }
 }

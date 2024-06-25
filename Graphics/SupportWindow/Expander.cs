@@ -91,25 +91,22 @@ namespace FESScript2.Graphics.SupportWindow
             {
                 if(blockViewer.isShown) 
                 { 
-                    blockViewer.Hide();
+                    blockViewer.Hide(false);
                 }
                 blockViewer.isShown = false;
-                doubleAnimationFirstPanel.From = expanderWindow.ActualHeight;
                 doubleAnimationFirstPanel.To = 0;
                 doubleAnimationFirstPanel.Duration = new Duration(TimeSpan.FromSeconds(((animationAntiSpeed / canvasHeight) * expanderWindow.ActualHeight)));
-                storyboardFirstPanel.Begin(expanderWindow);
-                storyboardFirstPanel.Begin(blockViewer);
             }
             else 
             {
-                doubleAnimationFirstPanel.From = expanderWindow.ActualHeight;
                 doubleAnimationFirstPanel.To = canvasHeight;
                 expanderWindow.Height = canvasHeight;
                 doubleAnimationFirstPanel.Duration = new Duration(TimeSpan.FromSeconds((animationAntiSpeed / canvasHeight) * MathF.Abs((float)(canvasHeight - expanderWindow.ActualHeight))));
                 //canvas.Children.Add(expanderWindow);
-                storyboardFirstPanel.Begin(expanderWindow);
-                storyboardFirstPanel.Begin(blockViewer);
             }
+                doubleAnimationFirstPanel.From = expanderWindow.ActualHeight;
+            storyboardFirstPanel.Begin(expanderWindow);
+            storyboardFirstPanel.Begin(blockViewer);
             isOpened = !isOpened;
         }
         private void OnWindowResize(object sender, SizeChangedEventArgs args) 

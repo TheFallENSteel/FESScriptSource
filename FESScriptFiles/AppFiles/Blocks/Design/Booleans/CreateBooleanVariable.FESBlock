@@ -1,10 +1,10 @@
 U23
 T4
-L2|0|Variable
-BD0|1|
-L3|2|=
-CD4|3|Haha
+L5|0|Variable
+BD2|1|
+L4|2|=
+CD3|3|Haha
 I0|0
-O0|0
+O1|0
 FU
-bool $B0 = $C4 ;
+bool $B2 = $C3 ;

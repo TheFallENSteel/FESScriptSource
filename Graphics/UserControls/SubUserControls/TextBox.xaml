@@ -9,6 +9,6 @@
              d:DesignHeight="25" d:DesignWidth="150" IsManipulationEnabled="True">
     <Grid Height="25" Width="auto">
         <local:BlockBackground Fill="White" Stroke="Gray" StrokeThickness="2"></local:BlockBackground>
-        <TextBox MinWidth="25" MaxLines="1" x:Name="textBox" Margin="7.5, 5" VerticalAlignment="Center" Style="{StaticResource TextsControl1}"/>
+        <TextBox MinWidth="25" MaxLines="1" x:Name="textBox" Margin="7.5, 5" VerticalAlignment="Center" Style="{StaticResource TextsControl1}" Text="{Binding Text}"/>
     </Grid>
 </UserControls:UserControlPlus>

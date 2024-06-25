@@ -16,71 +16,17 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
     public partial class TextBox : UserControlPlus, IContents
     {
 
-        /// <summary>
-        /// Creates textbox for blocks.
-        /// </summary>
-        /// <param name="OnlyNumbers">Specifies if user is able to write just numbers.</param>
+        public bool IsCompiler { get; set; }
+        public bool QuotationMarks { get => true; }
+        public int ID { get; set; }
+        public new string Name { get => $"B{ID}"; }
+        public string Text { get; set; }
 
         public TextBox()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
-        private bool isCompiler;
-
-        public bool IsCompiler
-        {
-            get
-            {
-                return isCompiler;
-            }
-            set
-            {
-                isCompiler = value;
-            }
-        }
-
-        public bool QuotationMarks
-        {
-            get
-            {
-                return quotationMarks;
-            }
-        }
-
-        const bool quotationMarks = true;
-
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
-        private int id;
-
-        public new string Name 
-        { 
-            get 
-            {
-                return $"B{Id}";
-            }
-        }
-
-        public string Text 
-        {
-            get 
-            {
-                return textBox.Text;
-            }
-            set
-            {
-                textBox.Text = value;
-            }
-        }
     }
 }

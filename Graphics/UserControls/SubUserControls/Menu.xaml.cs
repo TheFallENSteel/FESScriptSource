@@ -73,7 +73,6 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
         {
             //CodeWorks.Transpiler.Transpiler.TranspileProject(Settings.Settings.SaveName, Directories.Directory);
             ConsoleStart();
-            //TODO: Start Code
         }
 
         private void ellipseCompile_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

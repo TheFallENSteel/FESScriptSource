@@ -22,7 +22,6 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
         public Dots()
         {
             InitializeComponent();
-            //DependencyProperty.Register("X", typeof(float), typeof(Dots), ;
         }
 
         public Connect connection;
@@ -35,26 +34,16 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
         { 
             get 
             {
-                Point x = this.TranslatePoint(new Point(0, 0), MainWindow.mainWindow.mainCanvas);
-                Matrix transforms = ((Block)((Grid)((Grid)this.Parent).Parent).Parent).RenderTransform.Value;
+                Point point = this.TranslatePoint(new Point(0, 0), MainWindow.mainWindow.mainCanvas);
+                Block block = ((Block)((Grid)((Grid)this.Parent).Parent).Parent);
+                Matrix transforms = block.RenderTransform.Value;
+
                 Point ellipsePoint = new Point((ellipse.Width / 2) + this.Padding.Left, (ellipse.Height / 2) + this.Padding.Top) * transforms;
-                return new Point(ellipsePoint.X + x.X, ellipsePoint.Y + x.Y);
+                return new Point(ellipsePoint.X + point.X, ellipsePoint.Y + point.Y);
             }
         }
 
-        public new string Name 
-        {
-            get
-            {
-                return dotName;
-            }
-            set 
-            {
-                dotName = value;
-            }
-        }
-
-        private string dotName;
+        public new string Name { get; set; }
 
         /// <summary>
         /// Sets type of dot and sets color of fill;
@@ -62,77 +51,31 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
 
         public Type DotType
         { 
-            get 
-            {
-                return dotType;
-            }
+            get => dotType;
             set 
             {
                 dotType = value;
                 ellipse.Fill = ColorsBrushes.TypeToBrush[value];
             }
         }
+
         public Block BlockParent;
 
-        public Dots ConnectedTo 
-        { 
-            get 
-            {
-                if (connection != null) 
-                { 
-                    return connection.ConnectedTo(this);
-                }
-                return null;
-            }
-        }
+        public Dots ConnectedTo { get => connection == null ? null : connection.ConnectedTo(this); }
 
-        public IO io;
+        public IO IO;
 
-        /// <summary>
-        /// ID of the dot.
-        /// </summary>
-
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
-        private int id;
+        public int ID { get; set; }
 
         public void OnParentMove(object sender, EventArgs e) 
         {
-            if (connection != null) 
-            {
-                if (connection.isConnected) 
-                {
-                    connection.UpdatePosition();
-                }
-            }
+            if (connection != null && connection.isConnected) connection.UpdatePosition();
         }
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (connection == null || !connection.isConnected)
-            {
-                if (Connect.currentConnection.AddDot(this)) 
-                {
-                    Connect.currentConnection = new Connect();
-                }
-            }
-            else 
-            {
-                connection.BreakConnection();
-                if (Connect.currentConnection.AddDot(this))
-                {
-                    Connect.currentConnection = new Connect();
-                }
-            }
+            if (connection != null && connection.isConnected) connection.BreakConnection();
+            if (Connect.currentConnection.AddDot(this)) Connect.currentConnection = new Connect(); //Error creates connection again
         }
     }
 }

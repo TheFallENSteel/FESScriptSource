@@ -1,33 +1,33 @@
 U9
 T1
-M0|1|&==|!=|<=|>=|<|>
-L1|0|Is first
+M5|1|&==|!=|<=|>=|<|>
+L4|0|Is first
 L3|2|to second
 I0|1
 I1|1
-O0|4
+O2|4
 END
-if (M0 == "==") 
+if (M5 == "==") 
 {
-    O0 = I0 == I1;
+    O2 = I0 == I1;
 }
-else if (M0 == "!=") 
+else if (M5 == "!=") 
 {
-    O0 = I0 != I1;         
+    O2 = I0 != I1;         
 }
-else if (M0 == ">") 
+else if (M5 == ">") 
 {
-    O0 = I0 > I1;         
+    O2 = I0 > I1;         
 }
-else if (M0 == "<") 
+else if (M5 == "<") 
 {
-    O0 = I0 < I1;         
+    O2 = I0 < I1;         
 }
-else if (M0 == "<=") 
+else if (M5 == "<=") 
 {
-    O0 = I0 <= I1;         
+    O2 = I0 <= I1;         
 }
-else if (M0 == ">=") 
+else if (M5 == ">=") 
 {
-    O0 = I0 >= I1;         
+    O2 = I0 >= I1;         
 }

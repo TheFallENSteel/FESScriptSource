@@ -7,6 +7,6 @@ namespace FESScript2.CodeWorks
     public interface IName
     {
         public string Name { get; }
-        public int Id { get; }
+        public int ID { get; }
     }
 }

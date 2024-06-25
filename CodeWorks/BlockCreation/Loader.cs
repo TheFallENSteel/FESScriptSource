@@ -48,7 +48,7 @@ namespace FESScript2.CodeWorks.BlockCreation
             bool designEnd = false;
             string currentFile = Path.Combine(path, name);
             StreamReader reader = new StreamReader(currentFile);
-            BlockType block = new BlockType(0,"");
+            BlockType block = new BlockType(0,"", "", Graphics.UserControls.SubUserControls.Type.Error);
             block.Name = Path.GetFileNameWithoutExtension(currentFile);
             int exitCode = -1;
             while (!reader.EndOfStream && !designEnd) 
@@ -65,7 +65,7 @@ namespace FESScript2.CodeWorks.BlockCreation
             block.Category = new DirectoryInfo(Path.GetDirectoryName(currentFile)).Name;
             Category.AddOrCreate(block.Category, ref block);
             string UserCode = "";
-            block.singleActionOutput = !block.IsMoreThanOneActionOutputDot();
+            block.SingleActionOutput = !block.HasMoreThanOneActionOutputDot();
             while (!reader.EndOfStream)
             {
                 UserCode += reader.ReadLine();
@@ -76,7 +76,7 @@ namespace FESScript2.CodeWorks.BlockCreation
             }
             else if (exitCode == 1 || exitCode == 2) 
             { 
-                block.fakeString = UserCode;
+                block.FakeString = UserCode;
             }
             reader.Close();
         }
@@ -101,52 +101,52 @@ namespace FESScript2.CodeWorks.BlockCreation
                     string[] args1 = line.Substring(2).Split(splitChar);
                     Graphics.UserControls.SubUserControls.DotsType dot1 = new Graphics.UserControls.SubUserControls.DotsType()
                     {
-                        Id = int.Parse(args1[0]),
+                        ID = int.Parse(args1[0]),
                         dotType = (Graphics.UserControls.SubUserControls.Type)int.Parse(args1[1]),
                         io = Graphics.UserControls.SubUserControls.IO.Input,
                         isConditional = true
                     };
-                    block.dots.Add(dot1);
+                    block.Dots.Add(dot1);
                 }
                 else 
                 {
                     string[] args1 = line.Substring(1).Split(splitChar);
                     Graphics.UserControls.SubUserControls.DotsType dot1 = new Graphics.UserControls.SubUserControls.DotsType()
                     {
-                        Id = int.Parse(args1[0]),
+                        ID = int.Parse(args1[0]),
                         dotType = (Graphics.UserControls.SubUserControls.Type)int.Parse(args1[1]),
                         io = Graphics.UserControls.SubUserControls.IO.Input
                     };
-                    block.dots.Add(dot1);
+                    block.Dots.Add(dot1);
                 }
                 break;
             case 'O': //Výstupní podmínka
                 string[] args2 = line.Substring(1).Split(splitChar);
                 Graphics.UserControls.SubUserControls.DotsType dot2 = new Graphics.UserControls.SubUserControls.DotsType()
                 {
-                    Id = int.Parse(args2[0]),
+                    ID = int.Parse(args2[0]),
                     dotType = (Graphics.UserControls.SubUserControls.Type)int.Parse(args2[1]),
                     io = Graphics.UserControls.SubUserControls.IO.Output
                 };
-                block.dots.Add(dot2);
+                block.Dots.Add(dot2);
                 break;
             case 'T': //Nastavuje typ blocku (barvu)
                 block.type = (Graphics.UserControls.SubUserControls.Type)int.Parse(line.Substring(1));
                 break;
             case 'U': //Nastavuje unikátní identifikátor
-                block.id = int.Parse(line.Substring(1));
+                block.ID = int.Parse(line.Substring(1));
                 break;
             case 'L': //Přidává popisek
                 string[] args4 = line.Substring(1).Split(splitChar);
                 Graphics.UserControls.SubUserControls.ContentsType content3 = new Graphics.UserControls.SubUserControls.ContentsType()
                 {
-                    Id = int.Parse(args4[0]),
+                    ID = int.Parse(args4[0]),
                     collumn = int.Parse(args4[1]),
                     text = args4[2],
                     type = typeof(Graphics.UserControls.SubUserControls.TextLabel),
                         
                 };
-                block.contents.Add(content3);
+                block.Contents.Add(content3);
                 break;
             case 'B': //Přidává textové pole
                 if (line[1] == 'D') //Nastavuje, zda slouží pouze compileru
@@ -161,13 +161,13 @@ namespace FESScript2.CodeWorks.BlockCreation
                 string[] args5 = line.Substring(space).Split(splitChar);
                 Graphics.UserControls.SubUserControls.ContentsType content4 = new Graphics.UserControls.SubUserControls.ContentsType()
                 {
-                    Id = int.Parse(args5[0]),
+                    ID = int.Parse(args5[0]),
                     collumn = int.Parse(args5[1]),
                     text = args5[2],
                     type = typeof(Graphics.UserControls.SubUserControls.TextBox),
                     isCompiler = compiler
                 };
-                block.contents.Add(content4);
+                block.Contents.Add(content4);
                 break;
             case 'C': //Přidává Zaškrtávací pole
                 if (line[1] == 'D') //Nastavuje, zda slouží pouze compileru
@@ -182,13 +182,13 @@ namespace FESScript2.CodeWorks.BlockCreation
                 string[] args6 = line.Substring(space).Split(splitChar);
                 Graphics.UserControls.SubUserControls.ContentsType content5 = new Graphics.UserControls.SubUserControls.ContentsType()
                 {
-                    Id = int.Parse(args6[0]),
+                    ID = int.Parse(args6[0]),
                     collumn = int.Parse(args6[1]),
                     text = args6[2],
                     type = typeof(Graphics.UserControls.SubUserControls.Checkbox),
                     isCompiler = compiler
                 };
-                block.contents.Add(content5);
+                block.Contents.Add(content5);
                 break;
             case 'M': //Přidává Výběr z možností
                 if (line[1] == 'D') //Nastavuje, zda slouží pouze compileru
@@ -204,14 +204,14 @@ namespace FESScript2.CodeWorks.BlockCreation
                 string[] args7 = dataPacks[0].Split(splitChar);
                 Graphics.UserControls.SubUserControls.ContentsType content6 = new Graphics.UserControls.SubUserControls.ContentsType()
                 {
-                    Id = int.Parse(args7[0]),
+                    ID = int.Parse(args7[0]),
                     collumn = int.Parse(args7[1]),
                     text = args7[2],
                     type = typeof(Graphics.UserControls.SubUserControls.Combobox),
                     ContentArgs = new Graphics.UserControls.SubUserControls.ContentArgs.ComboBoxArgs(new List<string>(dataPacks[1].Split(splitChar))),
                     isCompiler = compiler
                 };
-                block.contents.Add(content6);
+                block.Contents.Add(content6);
                 break;
             case 'H': //Přidává c++ knihovny
                 Transpiler.GenerateFullCpp.headerHead += @$"{line.Split(splitChar)[1]}
@@ -222,12 +222,12 @@ namespace FESScript2.CodeWorks.BlockCreation
                 if (line[1] == 'A' && line[2] == 'K' && line[3] == 'E') //Použije obsah jako název proměnné
                 {
                     exitCode = 1;
-                    block.isFake = true;
+                    block.IsBodyless = true;
                 }
                 else if (line[1] == 'U') //Nebude vytvářet funkci
                 {
                     exitCode = 2;
-                    block.createFunction = false;
+                    block.CreateFunction = false;
                 }
                 break;
             case 'E': //Konec, za kterým následuje kód

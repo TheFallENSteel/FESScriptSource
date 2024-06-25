@@ -18,7 +18,7 @@ namespace FESScript2.CodeWorks.BlockCreation
         public static List<Category> categories = new List<Category>();
         public Category(string name)
         {
-            Name = name;
+            Name = name; 
         }
         public List<UserControl> blocks = new List<UserControl>();
         public string Name 
@@ -57,7 +57,7 @@ namespace FESScript2.CodeWorks.BlockCreation
 
         private static void OnBlockClick(object sender, MouseButtonEventArgs args) 
         {
-            Graphics.UserControls.Block block = new Graphics.UserControls.Block();
+            Graphics.UserControls.Block block = new Graphics.UserControls.Block(false, true);
             BlockRecreation.RecreateBlock(((Graphics.UserControls.Block)((UserControl)sender).Content).blockType, out block);
             block.Move(MainWindow.mainMenu.expander.canvas1.ActualWidth + MainWindow.mainMenu.expander.blockViewer.ActualWidth, ((UserControl)sender).TransformToVisual(MainWindow.mainWindow.mainCanvas).Transform(new Point(0, 0)).Y + 15, false);
             //Canvas.SetLeft(block, MainWindow.mainMenu.expander.canvas1.ActualWidth + MainWindow.mainMenu.expander.blockViewer.ActualWidth);

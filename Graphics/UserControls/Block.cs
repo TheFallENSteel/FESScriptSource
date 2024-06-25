@@ -1,144 +1,45 @@
 ﻿using System.Collections.Generic;
 using FESScript2.Graphics.UserControls.SubUserControls;
 using System;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using FESScript2.CodeWorks.Functions;
 
 namespace FESScript2.Graphics.UserControls
 {
-    /// <summary>
-    /// Struct used to reconstruct block.
-    /// </summary>
-
-    public class BlockType 
-    {
-
-        public BlockType(int id, string category, string name = "", SubUserControls.Type type = SubUserControls.Type.Error) 
-        {
-            this.Category = category;
-            this.id = id;
-            this.name = name;
-            this.type = type;
-            dots = new List<DotsType>();
-            singleActionOutput = !IsMoreThanOneActionOutputDot();
-            contents = new List<ContentsType>();
-            global.Add(this);
-        }
-
-        public bool isFake;
-
-        public bool createFunction = true;
-
-        public string fakeString;
-
-        public string Category;
-
-        public bool IsMoreThanOneActionOutputDot() 
-        {
-            int dotCount = 0;
-            foreach (DotsType dot in dots)
-            {
-                if ((dot.dotType == SubUserControls.Type.Action || dot.dotType == SubUserControls.Type.SubAction) && dot.io == IO.Output)
-                {
-                    dotCount++;
-                }
-            }
-            if (dotCount >= 2)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Determines whether there is more than one Action Output Dot.
-        /// </summary>
-
-        public bool singleActionOutput;
-
-        public static BlockType Find(int id) 
-        { 
-            for (int i = 0; i < global.Count; i++) 
-            {
-                if (global[i].id == id) 
-                {
-                    return global[i];
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Global BlockType register.
-        /// </summary>
-
-        public static List<BlockType> global = new List<BlockType>();
-
-        /// <summary>
-        /// Unique identifier of block type.
-        /// </summary>
-        public int id;
-
-        /// <summary>
-        /// Name of the block type.
-        /// </summary>
-
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
-            set
-            {
-                name = value;
-            }
-        }
-
-        string name;
-
-        /// <summary>
-        /// Type of the block.
-        /// </summary>
-
-        public FESScript2.Graphics.UserControls.SubUserControls.Type type;
-
-        /// <summary>
-        /// Struct that stores data needed for dot reconstruction.
-        /// </summary>
-        
-        public List<DotsType> dots;
-
-        /// <summary>
-        /// Struct that stores data needed for contents of block reconstruction.
-        /// </summary>
-
-        public List<ContentsType> contents;
-    }
-
     /// <summary>
     /// The visual block.
     /// </summary>
 
     public class Block : UserControlPlus, CodeWorks.Functions.IMoveable, CodeWorks.IName
     {
+        public static List<Block> blocks = new List<Block>();
+
         public event EventHandler OnMove;
+
+        public new string Name { get; set; }
+        public Point Position { get; set; }
+        public bool IsClicked { get; set; }
+        public Point Offset { get; set; }
+        public int ID { get => blocks.IndexOf(this); }
+        public bool IsShown { get; set; }
+        public BlockType blockType {  get; set; }
+        public int BlockTypeId { get; set; }
+
         /// <summary>
-        /// Determines whether events should be subscribed.
+        /// Global list of all blocks created.
         /// </summary>
-        private bool subscribeToEvents;
+
+        public Grid grid;
+        public List<Dots> dots = new List<Dots>();
+        public List<Dots> InputNonActionDots = new List<Dots>();
+        public List<Dots> ActionoutputDots = new List<Dots>();
+        public List<IContents> contentsInteractive = new List<IContents>();
 
         private void OnKeyDown(object sender, KeyEventArgs e) 
         { 
-            if ((e.Key == Key.D || e.Key == Key.Delete) && isClicked) 
+            if ((e.Key == Key.D || e.Key == Key.Delete) && IsClicked) 
             {
                 DeleteBlock();
             }
@@ -150,24 +51,22 @@ namespace FESScript2.Graphics.UserControls
 
         public string GetValueOfRelatives(string contentName) 
         {
-            if (contentName != null) 
-            { 
-                string[] parts = contentName.Split(' ');
-                string returnValue = "";
-                for (int i = 0; i < parts.Length; i++) 
+            if (contentName == null) return null;
+
+            string[] parts = contentName.Split(' ');
+            string returnValue = "";
+            for (int i = 0; i < parts.Length; i++) 
+            {
+                if (parts[i][0] == '$') 
                 {
-                    if (parts[i][0] == '$') 
-                    {
-                        returnValue += $" {GetValueOfName(parts[i].Substring(1))}";
-                    }
-                    else 
-                    {
-                        returnValue += $" {parts[i]}";
-                    }
+                    returnValue += $" {GetValueOfName(parts[i].Substring(1))}";
                 }
-                return returnValue;
+                else 
+                {
+                    returnValue += $" {parts[i]}";
+                }
             }
-            return null;
+            return returnValue;
         }
         private string GetValueOfName(string contentName) 
         { 
@@ -190,22 +89,14 @@ namespace FESScript2.Graphics.UserControls
 
         public virtual void EventSubscribe() 
         {
-            if (subscribeToEvents)
-            {
-                MainWindow.mainWindow.CameraMoveEvent += ((CodeWorks.Functions.IMoveable)this).Redraw;
-            }
-        }
+            KeyDown += OnKeyDown;
+            MouseDown += ((IMoveable)this).MouseDown;
+            MouseMove += ((IMoveable)this).MouseMove;
+            this.SizeChanged += (object _, SizeChangedEventArgs _) => OnMove?.Invoke(null, null);
+            Focusable = true;
+            Loaded += (sender, e) => Keyboard.Focus(this);
 
-        public new string Name 
-        { 
-            get 
-            {
-                return name;
-            }
-            set 
-            {
-                name = value;
-            }
+            MainWindow.mainWindow.CameraMoveEvent += ((IMoveable)this).Redraw;
         }
 
         public static void DestroyAll()
@@ -214,95 +105,26 @@ namespace FESScript2.Graphics.UserControls
             blocks.Clear();
         }
 
-        string name;
-
-        public Point Position
+        public Dots FindDot(int id) 
         { 
-            get 
-            {
-                return position;
-            }
-            set 
-            {
-                position = value;
-            }
+            return dots.Find((Dots dot) => dot.ID == id);
         }
 
-        private Point position;
-
-        /// <summary>
-        /// Determines if is clicked.
-        /// </summary>
-
-        public bool IsClicked
+        public IContents FindContent(int id)
         {
-            get 
-            {
-                return isClicked;
-            }
-            set 
-            {
-                isClicked = value;
-            }
+            return contentsInteractive.Find((IContents content) => content.ID == id);
         }
-        private bool isClicked;
 
-        /// <summary>
-        /// Determines last mouse position.
-        /// </summary>
-
-        public Point Offset
+        public UserControlPlus FindElement(int id) 
         {
-            get 
-            {
-                return offSet;
-            }
-            set 
-            {
-                offSet = value;
-            }
+            Dots dot = FindDot(id);
+            if (dot != null) return dot;
+
+            IContents content = FindContent(id);
+            if (content != null) return (UserControlPlus)content;
+
+            return null;
         }
-        private Point offSet;
-
-        /// <summary>
-        /// Global list of all blocks created.
-        /// </summary>
-
-        public static List<Block> blocks = new List<Block>();
-
-        public Grid grid;
-
-        /// <summary>
-        /// Gets unique id of every Block.
-        /// </summary>
-
-        public int Id 
-        { 
-            get 
-            {
-                return blocks.IndexOf(this);
-            }
-        }
-
-        public List<Dots> dots = new List<Dots>();
-
-        public List<Dots> InputNonActionDots = new List<Dots>();
-        public List<Dots> ActionoutputDots = new List<Dots>();
-        public List<IContents> contentsInteractive = new List<IContents>();
-
-        public BlockType blockType;
-
-        /// <summary>
-        /// Block type id.
-        /// </summary>
-
-        public int BlockTypeId;
-
-        /// <summary>
-        /// Determines whether the block should be shown.
-        /// </summary>
-
-        public bool isShown;
 
         /// <summary>
         /// Shows block.
@@ -310,11 +132,11 @@ namespace FESScript2.Graphics.UserControls
 
         public void Show() 
         {
-            if(!isShown) 
+            if(!IsShown) 
             {
                 blocks.Add(this);
                 MainWindow.mainWindow.mainCanvas.Children.Add(this);
-                this.isShown = true;
+                this.IsShown = true;
             }
         }
 
@@ -344,58 +166,23 @@ namespace FESScript2.Graphics.UserControls
             OnMove?.Invoke(null, null);
         }
 
-        /// <summary>
-        /// Destroys block.
-        /// </summary>
-
-        public void Delete()
-        {
-            MainWindow.mainWindow.mainCanvas.Children.Clear();
-            blocks.Remove(this);
-            this.isShown = false;
-        }
-
         public void DeleteBlock()
         {
             MainWindow.mainWindow.mainCanvas.Children.Remove(this);
             blocks.Remove(this);
-            this.isShown = false;
+            this.IsShown = false;
         }
 
-        /// <summary>
-        /// Whether it should be shown
-        /// </summary>
-        /// <param name="show">Determines whether Show() should be called.</param>
-
-        public Block(bool show = false, bool subscribeToEvents = true) : base()
+        public Block(bool show, bool subscribeToEvents) : base()
         {
-            this.subscribeToEvents = subscribeToEvents;
-            ((CodeWorks.Functions.IMoveable)this).EventSubscribe();
-            Focusable = true;
-            Loaded += (sender,e) => Keyboard.Focus(this);
-            KeyDown += OnKeyDown;
-            MouseDown += ((CodeWorks.Functions.IMoveable)this).MouseDown;
-            MouseMove += ((CodeWorks.Functions.IMoveable)this).MouseMove;
+            if (subscribeToEvents) EventSubscribe();
+            
             Canvas.SetLeft(this, 0);
             Canvas.SetTop(this, 0);
             MinHeight = 40;
             grid = new Grid();
             this.Content = grid;
-            this.SizeChanged += Resize;
-            if (show) 
-            {
-                Show();
-            }
+            if (show) Show();
         }
-        private void Resize(object sender, SizeChangedEventArgs e) 
-        {
-            OnMove?.Invoke(null, null);
-        }
-
-        /// <summary>
-        /// Activates when mouse moves over object.
-        /// </summary>
-        /// <param name="sender">Sender.</param>
-        /// <param name="e">Arguments of mouse.</param>
     }
 }

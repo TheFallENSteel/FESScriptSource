@@ -1,7 +1,7 @@
 U5
 T2
-L0|0|Convert to string
-O0|2
+L2|0|Convert to string
+O1|2
 I0|1
 END
-O0 = std::to_string(I0);
+O1 = std::to_string(I0);

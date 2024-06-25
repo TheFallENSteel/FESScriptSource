@@ -31,12 +31,12 @@ namespace FESScript2.CodeWorks.BlockCreation
             block.grid.ColumnDefinitions.Add(new ColumnDefinition() { Name = "Contents", Width = System.Windows.GridLength.Auto });
             block.grid.ColumnDefinitions.Add(new ColumnDefinition() { Name = "OutputDots", Width = System.Windows.GridLength.Auto });
             RecreateBackground(blockTemplate.type, ref block);
-            RecreateDots(blockTemplate.dots, ref block);
-            RecreateContents(blockTemplate.contents, ref block);
-            block.BlockTypeId = blockTemplate.id;
+            RecreateDots(blockTemplate.Dots, ref block);
+            RecreateContents(blockTemplate.Contents, ref block);
+            block.BlockTypeId = blockTemplate.ID;
             block.blockType = blockTemplate;
-            block.Name = blockTemplate.Name + block.Id;
-            if (blockTemplate.id == 0)
+            block.Name = blockTemplate.Name + block.ID;
+            if (blockTemplate.ID == 0)
             {
                 Block startPreview = block;
                 startPreview.Dispatcher.BeginInvoke(new Action(() =>
@@ -79,8 +79,8 @@ namespace FESScript2.CodeWorks.BlockCreation
             {
                 Graphics.UserControls.SubUserControls.Dots dot = new Graphics.UserControls.SubUserControls.Dots();
                 dot.DotType = dotType.dotType;
-                dot.Id = dotType.Id;
-                dot.io = dotType.io;
+                dot.ID = dotType.ID;
+                dot.IO = dotType.io;
                 block.OnMove += dot.OnParentMove;
                 dot.BlockParent = block;
                 dot.isConditional = dotType.isConditional;
@@ -167,7 +167,7 @@ namespace FESScript2.CodeWorks.BlockCreation
         }
         private static void SetContent(object content, Graphics.UserControls.SubUserControls.ContentsType contentType, ref Block block)
         {
-            ((Graphics.UserControls.SubUserControls.IContents)content).Id = contentType.Id;
+            ((Graphics.UserControls.SubUserControls.IContents)content).ID = contentType.ID;
             ((Graphics.UserControls.SubUserControls.IContents)content).Text = contentType.text;
             ((Graphics.UserControls.SubUserControls.IContents)content).IsCompiler = contentType.isCompiler;
             Grid.SetColumn((Control)content, contentType.collumn);

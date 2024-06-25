@@ -1,9 +1,9 @@
 U22
 T4
-L0|0|Set value of
-BD1|2|
+L4|0|Set value of
+BD3|2|
 I0|0
 I1|4
-O0|0
+O2|0
 FU
-$B1 = $I1 ;
+$B3 = $I1 ;
