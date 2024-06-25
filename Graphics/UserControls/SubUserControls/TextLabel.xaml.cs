@@ -18,70 +18,17 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
     /// </summary>
     public partial class TextLabel : UserControlPlus, IContents
     {
+        public bool IsCompiler { get; set; }
+        public int ID { get; set; }
+        public bool QuotationMarks { get => true; }
+        public new string Name { get => $"L{ID}"; }
+        public string Text { get; set; }
+
         public TextLabel()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
-        private bool isCompiler;
-
-        public bool IsCompiler
-        {
-            get
-            {
-                return isCompiler;
-            }
-            set
-            {
-                isCompiler = value;
-            }
-        }
-
-        public bool QuotationMarks
-        {
-            get
-            {
-                return quotationMarks;
-            }
-        }
-
-        const bool quotationMarks = true;
-
-        /// <summary>
-        /// Text string.
-        /// </summary>
-
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
-        private int id;
-
-        public new string Name
-        {
-            get
-            {
-                return $"L{Id}";
-            }
-        }
-
-        public string Text
-        {
-            get
-            {
-                return text.Text;
-            }
-            set
-            {
-                text.Text = value;
-            }
-        }
     }
 }

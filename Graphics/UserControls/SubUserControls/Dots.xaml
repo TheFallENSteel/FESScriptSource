@@ -8,7 +8,9 @@
              xmlns:SubUserControls="clr-namespace:FESScript2.Graphics.UserControls.SubUserControls"
              mc:Ignorable="d" 
              d:DesignHeight="15" d:DesignWidth="15" RenderTransformOrigin="0.5,0.5">
-    <Grid MouseDown="Grid_MouseDown" x:Name="grid" RenderTransformOrigin="0.5,0.5">
-        <Ellipse x:Name="ellipse" Stroke="Gray" StrokeThickness="2" Width="15" Height="15"/>
+    <Grid MouseDown="Grid_MouseDown" MouseUp="Grid_MouseUp" x:Name="grid" RenderTransformOrigin="0.5,0.5">
+        <Ellipse x:Name="ellipse" Stroke="Gray" StrokeThickness="2" Width="15" Height="15">
+        </Ellipse>
+        <SubUserControls:ConnectorPoint VerticalAlignment="Center" HorizontalAlignment="Center" x:Name="Connector"/>
     </Grid>
 </local:UserControlPlus>

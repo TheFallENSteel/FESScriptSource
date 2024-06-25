@@ -36,6 +36,8 @@ namespace FESScript2.CodeWorks.Functions
             set;
         }
 
+        public static bool IsMovable = true;
+
         /// <summary>
         /// Offset of mouse. Offset must not return <see cref="null"/>.
         /// </summary>
@@ -63,7 +65,7 @@ namespace FESScript2.CodeWorks.Functions
 
         public void MouseMove(object sender, MouseEventArgs e)
         {
-            if (IsClicked && e.LeftButton == MouseButtonState.Pressed)
+            if (IsClicked && IsMovable && e.LeftButton == MouseButtonState.Pressed)
             {
                 double pointX = e.GetPosition((UIElement)this).X - Offset.X;
                 double pointY = e.GetPosition((UIElement)this).Y - Offset.Y;

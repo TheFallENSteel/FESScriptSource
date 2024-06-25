@@ -58,7 +58,7 @@ int main()
                 blocksToRun = blocksToRun.Distinct().ToList();
                 foreach (Block blockX in blocksToRun)
                 {
-                    if (!blockX.blockType.isFake)
+                    if (!blockX.blockType.IsBodyless)
                     {
                         InitializeBlock(blockX, ref returnValue, reinitialize: reinitialize);
                     }
@@ -66,19 +66,19 @@ int main()
                 string constructorParams = "";
                 for (int i = 0; i < block.dots.Count; i++)
                 {
-                    if (block.dots[i].io == IO.Input && (block.dots[i].DotType != Graphics.UserControls.SubUserControls.Type.Action && block.dots[i].DotType != Graphics.UserControls.SubUserControls.Type.SubAction))
+                    if (block.dots[i].IO == IO.Input && (block.dots[i].DotType != Graphics.UserControls.SubUserControls.Type.Action && block.dots[i].DotType != Graphics.UserControls.SubUserControls.Type.SubAction))
                     {
-                        if (block.dots[i].ConnectedTo != null && !block.dots[i].ConnectedTo.BlockParent.blockType.isFake)
+                        if (block.dots[i].ConnectedTo != null && !block.dots[i].ConnectedTo.BlockParent.blockType.IsBodyless)
                         {
                             constructorParams += $"{block.dots[i].ConnectedTo.BlockParent.Name}.{block.dots[i].ConnectedTo.Name}, ";
                         }
                         else if(block.dots[i].ConnectedTo == null)
                         {
-                            constructorParams += $"{DefaultValues.Values(block.dots[i].DotType)}, ";
+                            constructorParams += $"{block.dots[i].DotType.DefaultValues()}, ";
                         }
-                        else if (block.dots[i].ConnectedTo.BlockParent.blockType.isFake)
+                        else if (block.dots[i].ConnectedTo.BlockParent.blockType.IsBodyless)
                         {
-                            string x = block.dots[i].ConnectedTo.BlockParent.GetValueOfRelatives(block.dots[i].ConnectedTo.BlockParent.blockType.fakeString);
+                            string x = block.dots[i].ConnectedTo.BlockParent.GetValueOfRelatives(block.dots[i].ConnectedTo.BlockParent.blockType.FakeString);
                             constructorParams += x + ", ";
                         }
                     }
@@ -104,7 +104,7 @@ int main()
                         }
                     }
                 }
-                if (block.blockType.createFunction && !block.blockType.isFake)
+                if (block.blockType.CreateFunction && !block.blockType.IsBodyless)
                 {
                 string declaration = "";
                 if(reinitialize && constructorParams == "") 
@@ -159,7 +159,7 @@ int main()
                             InitializeBlock(subBlock, ref nextblocks, reinitialize: reinitialize);
                             if (block.ActionoutputDots[i].DotType == Graphics.UserControls.SubUserControls.Type.Action)
                             {
-                                cases += $@"case {block.ActionoutputDots[i].Id}:
+                                cases += $@"case {block.ActionoutputDots[i].ID}:
     {{
         {nextblocks}
         break;
@@ -171,7 +171,7 @@ int main()
                                 multipleSub = true;
                                 afterCases += $@"{conditionString}
 int {block.Name}condition = {block.Name}.Run();
-while({block.Name}condition == {block.ActionoutputDots[i].Id}) 
+while({block.Name}condition == {block.ActionoutputDots[i].ID}) 
     {{
         {nextblocks}
 
@@ -185,7 +185,7 @@ while({block.Name}condition == {block.ActionoutputDots[i].Id})
                             }
                             else if (block.ActionoutputDots[i].DotType == Graphics.UserControls.SubUserControls.Type.SubAction && multipleSub)
                             {
-                                afterCases += $@"while({block.Name}condition == {block.ActionoutputDots[i].Id}) 
+                                afterCases += $@"while({block.Name}condition == {block.ActionoutputDots[i].ID}) 
 {{
     {nextblocks}
 
@@ -212,9 +212,9 @@ while({block.Name}condition == {block.ActionoutputDots[i].Id})
 ";
                     }
                 }
-                else if (!block.blockType.isFake)
+                else if (!block.blockType.IsBodyless)
                 {
-                    returnValue += $@"  {block.GetValueOfRelatives(block.blockType.fakeString)}
+                    returnValue += $@"  {block.GetValueOfRelatives(block.blockType.FakeString)}
 "; 
                     if (block.ActionoutputDots.Count != 0) 
                     { 

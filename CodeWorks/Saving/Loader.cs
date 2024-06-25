@@ -1,83 +1,118 @@
 ﻿using System;
-using System.Windows;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Xml;
+using System.Xml.Serialization;
+using FESScript2.Graphics.UserControls;
+using FESScript2.Graphics.UserControls.SubUserControls;
 
 namespace FESScript2.CodeWorks.Saving
 {
     public static class Loader
     {
-        private static Dictionary<int, Graphics.UserControls.Block> blocks;
+        private static Dictionary<int, Block> blocks;
 
-        public static void LoadProject (string fileName) 
+        public static void LoadProject(string fileName)
         {
-            Graphics.UserControls.Block.DestroyAll();
-            blocks = new Dictionary<int, Graphics.UserControls.Block>();
-            Directory.CreateDirectory(Directories.Projects + @$"\{fileName}");
-            if (File.Exists(Directories.Projects + @$"\{fileName}\Save.FESSave")) 
-            { 
-                string[] file = File.ReadAllLines(Directories.Projects + @$"\{fileName}\Save.FESSave");
-                string[] globalArgs = file[0].Split('|');
-                MainWindow.Zoom = double.Parse(globalArgs[0]);
-                MainWindow.mainWindow.CameraPosition = new Point(double.Parse(globalArgs[1]), double.Parse(globalArgs[2]));
-                for (int i = 1; i < file.Length; i++)
-                {
-                    LoadBlock(file[i]);
+            Block.DestroyAll();
+            blocks = new Dictionary<int, Block>();
+
+            string DirUri = Directories.Projects + @$"\{fileName}";
+            string FileUri = DirUri + @"\Save.FESSave";
+
+            Directory.CreateDirectory(DirUri);
+
+
+            if (File.Exists(FileUri))
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(SaveProjectData));
+                XmlReader reader = XmlReader.Create(FileUri);
+                try 
+                { 
+                    SaveProjectData projectData = (SaveProjectData)serializer.Deserialize(reader);
+
+                    LoadProject(projectData);
+
+                    MainWindow.mainWindow.UpdateGlobalPosition();
                 }
-                MainWindow.mainWindow.UpdateGlobalPosition();
+                catch 
+                { 
+                    MessageBox.Show("Save file data is invalid.", "Error", MessageBoxButton.OK);
+                }
+                reader.Close();
             }
-            else 
+            else
             {
                 MessageBox.Show("File not found. You need to create one before loading.", "Error", MessageBoxButton.OK);
             }
         }
-        private static void LoadBlock(string line)
+        private static void LoadProject(SaveProjectData projectData)
         {
-            Graphics.UserControls.Block block = new Graphics.UserControls.Block();
-            string[] parameters = line.Split("&");
-            LoadProperties(parameters[0], ref block);
-            LoadContentsData(parameters[2], ref block);
-            LoadDotConnections(parameters[1], ref block);
-            
-        }
-        private static void LoadProperties(string data, ref Graphics.UserControls.Block block) 
-        {
-            string[] args = data.Split("|");
-            BlockCreation.BlockRecreation.RecreateBlock(Graphics.UserControls.BlockType.Find(int.Parse(args[0])), out block);
-            blocks.Add(int.Parse(args[1]), block);
-            block.Position = new System.Windows.Point(double.Parse(args[2]), double.Parse(args[3]));
-        }
-        private static void LoadDotConnections(string data, ref Graphics.UserControls.Block block)
-        {
-            string[] dataPacks = data.Split("/",StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < dataPacks.Length; i++) 
-            { 
-                string[] args = dataPacks[i].Split("|");
-                int connectedToBlockId = int.Parse(args[1]);
-                if (blocks.ContainsKey(connectedToBlockId)) 
-                { 
-                    Graphics.UserControls.SubUserControls.Dots dot11 = block.dots.Find((Graphics.UserControls.SubUserControls.Dots dot1) => dot1.Name == args[0]);
-                    Graphics.UserControls.Connect connection = new Graphics.UserControls.Connect();
-                    connection.AddDot(block.dots[block.dots.IndexOf(dot11)]);
-                    Graphics.UserControls.SubUserControls.Dots dot22 = blocks[connectedToBlockId].dots.Find((Graphics.UserControls.SubUserControls.Dots dot2) => dot2.Name == args[2]);
-                    try 
-                    { 
-                        connection.AddDot(blocks[connectedToBlockId].dots[blocks[connectedToBlockId].dots.IndexOf(dot22)]);
-                    }
-                    catch (Exception _){}
-                }
-            }
-        }
-        private static void LoadContentsData(string data, ref Graphics.UserControls.Block block)
-        {
-            string[] dataPacks = data.Split("/", StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < dataPacks.Length; i++)
+            MainWindow.Zoom = projectData.Zoom;
+            MainWindow.mainWindow.CameraPosition = new Point(projectData.CameraX, projectData.CameraY);
+
+            for (int i = 0; i < projectData.Blocks.Count; i++)
             {
-                string[] args = dataPacks[i].Split("|");
-                Graphics.UserControls.SubUserControls.IContents content = block.contentsInteractive.Find((Graphics.UserControls.SubUserControls.IContents content) => content.Name == args[0]);
-                content.Text = args[1];
+                LoadBlock(projectData.Blocks[i]);
             }
+        }
+
+        private static void LoadBlock(SaveBlockData blockData)
+        {
+            Block block = new Block(false, true);
+
+            LoadProperties(blockData, ref block);
+            LoadContentsData(blockData.ContentData, ref block);
+            LoadDotConnections(blockData.DotData, ref block);
+
+        }
+
+        private static void LoadProperties(SaveBlockData blockData, ref Block block)
+        {
+            BlockCreation.BlockRecreation.RecreateBlock(BlockType.Find(blockData.BlockTypeID), out block);
+            blocks.Add(blockData.ID, block);
+            block.Position = new Point(blockData.PositionX, blockData.PositionY);
+        }
+
+        private static void LoadDotConnections(List<SaveDotData> dotData, ref Block block)
+        {
+            for (int i = 0; i < dotData.Count; i++)
+            {
+                LoadDotConnection(dotData[i], ref block);
+            }
+        }
+
+        private static void LoadDotConnection(SaveDotData dotData, ref Block block)
+        {
+            try
+            {
+                if (dotData.ConnectedToParentID == -1 || dotData.ConnectedToID == -1) return; //No connection
+                if (!blocks.ContainsKey(dotData.ConnectedToParentID)) return; //Is not the second block
+
+                Connection connection = new Connection(block.FindDot(dotData.ID), blocks[dotData.ConnectedToParentID].FindDot(dotData.ConnectedToID));
+            } 
+            catch { }
+        }
+
+        private static void LoadContentsData(List<SaveContentData> contentData, ref Block block)
+        {
+            for (int i = 0; i < contentData.Count; i++)
+            {
+                LoadContentsData(contentData[i], ref block);
+            }
+        }
+        private static void LoadContentsData(SaveContentData contentData, ref Block block)
+        {
+            IContents content = block.FindContent(contentData.ID);
+            try 
+            { 
+                content.Text = contentData.Text;
+            }
+            catch { }
         }
     }
 }

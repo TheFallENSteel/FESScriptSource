@@ -47,6 +47,7 @@ namespace FESScript2.Graphics.SupportWindow
         {
             if (e.Key == Key.Enter) 
             {
+                
                 ((Console.Console)((Grid)Parent).Parent).Write(Text);
                 Text = "";
             }

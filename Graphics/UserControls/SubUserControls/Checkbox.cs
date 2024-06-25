@@ -15,80 +15,19 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
 {
     public class Checkbox : CheckBox, IContents
     {
+        public bool IsCompiler { get; set; }
+        public bool QuotationMarks { get => false; }
+        public int ID { get; set; }
+        public new string Name { get => $"C{ID}"; }
+        public string Text
+        {
+            get => IsChecked.Value ? "true" : "false";
+            set { if (value == "true") IsChecked = true; else IsChecked = false; }
+        }
+
         public Checkbox() : base()
         {
             
         }
-
-        private bool isCompiler;
-
-        public bool IsCompiler 
-        {
-            get 
-            {
-                return isCompiler;
-            }
-            set 
-            {
-                isCompiler = value;
-            }
-        }
-
-        public bool QuotationMarks 
-        { 
-            get 
-            {
-                return quotationMarks;
-            }
-        }
-
-        const bool quotationMarks = false;
-
-        public string Text 
-        { 
-            get 
-            { 
-                if ((bool)IsChecked) 
-                {
-                    return "true";
-                }
-                else 
-                {
-                    return "false";
-                }
-            }
-            set 
-            {
-                if (value == "true")
-                {
-                    IsChecked = true;
-                }
-                else if (value == "false")
-                {
-                    IsChecked = false;
-                }
-            }
-        }
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
-        private int id;
-
-        public new string Name
-        {
-            get
-            {
-                return $"C{Id}";
-            }
-        }
-
     }
 }

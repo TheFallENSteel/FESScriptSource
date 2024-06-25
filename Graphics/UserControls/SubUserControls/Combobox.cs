@@ -26,50 +26,13 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
             BorderThickness = new Thickness(0);
         }
 
-        private bool isCompiler;
+        public bool IsCompiler{ get; set; }
 
-        public bool IsCompiler
-        {
-            get
-            {
-                return isCompiler;
-            }
-            set
-            {
-                isCompiler = value;
-            }
-        }
+        public bool QuotationMarks { get => true; }
 
-        public bool QuotationMarks
-        {
-            get
-            {
-                return quotationMarks;
-            }
-        }
+        public int ID{ get; set; }
 
-        const bool quotationMarks = true;
-
-        public int Id
-        {
-            get
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
-        private int id;
-
-        public new string Name
-        {
-            get
-            {
-                return $"M{Id}";
-            }
-        }
+        public new string Name { get => $"M{ID}"; }
 
         public new string Text
         {

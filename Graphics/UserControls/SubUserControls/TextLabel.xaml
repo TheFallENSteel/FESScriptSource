@@ -8,6 +8,6 @@
              mc:Ignorable="d" 
              d:DesignWidth="800" MinWidth="15">
     <Grid>
-        <TextBlock x:Name="text" Width="auto" VerticalAlignment="Center" Margin="5,0" d:Text="afasfas" Style="{StaticResource TextsBlock1}"></TextBlock>           
+        <TextBlock x:Name="text" Width="auto" VerticalAlignment="Center" Margin="5,0" d:Text="afasfas" Style="{StaticResource TextsBlock1}" Text="{Binding Text}"></TextBlock>           
     </Grid>
 </UserControls:UserControlPlus>

@@ -18,6 +18,21 @@ namespace FESScript2.Settings.Support
     /// </summary>
     public partial class CustomtitleBar : UserControl
     {
+        /// <summary>
+        /// True shuts down app on click. Default is false.
+        /// </summary>
+        public bool ShutDownApp { set; get; }
+
+        /// <summary>
+        /// Gets or sets Title of Window.
+        /// </summary>
+        
+        public string TitleText
+        {
+            set => saveText.Text = value;
+            get => saveText.Text;
+        }
+
         public CustomtitleBar()
         {
             InitializeComponent();
@@ -29,49 +44,11 @@ namespace FESScript2.Settings.Support
 
         private void CloseButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            MainWindow.GetWindow(this).Close();
-            if(shutDownApp) 
+            CurrentWindow.Close();
+            if(ShutDownApp) 
             {
                 Application.Current.Shutdown(0);
                 Environment.Exit(0);
-            }
-        }
-
-        /// <summary>
-        /// True shuts down app on click. Default is false.
-        /// </summary>
-
-        bool shutDownApp = false;
-
-        /// <summary>
-        /// True shuts down app on click. Default is false.
-        /// </summary>
-
-        public bool ShutDownApp 
-        { 
-            get 
-            {
-                return shutDownApp;
-            }
-            set 
-            {
-                shutDownApp = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets Title of Window.
-        /// </summary>
-        
-        public string TitleText
-        {
-            set 
-            {
-                saveText.Text = value;
-            }
-            get 
-            {
-                return saveText.Text;
             }
         }
 
@@ -81,7 +58,12 @@ namespace FESScript2.Settings.Support
         
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ((Window)((Grid)this.Parent).Parent).DragMove();
+            CurrentWindow.DragMove();
+        }
+
+        private Window CurrentWindow
+        {
+            get => ((Window)((Grid)this.Parent).Parent);
         }
     }
 }

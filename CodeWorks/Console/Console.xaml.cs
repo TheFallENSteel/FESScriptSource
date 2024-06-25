@@ -65,6 +65,9 @@ namespace FESScript2.Console
             ConsoleCpp.StartInfo.RedirectStandardOutput = true;
             ConsoleCpp.StartInfo.RedirectStandardError = true;
             ConsoleCpp.StartInfo.CreateNoWindow = true;
+            ConsoleCpp.StartInfo.StandardInputEncoding = Encoding.UTF8;
+            ConsoleCpp.StartInfo.StandardOutputEncoding = Encoding.UTF8;
+            ConsoleCpp.StartInfo.StandardErrorEncoding = Encoding.UTF8;
 #if DEBUG
             ConsoleCpp.StartInfo.CreateNoWindow = false;
 #endif
@@ -197,7 +200,14 @@ namespace FESScript2.Console
 
         private void OpenProgramFile(string fileName) 
         {
-            writer.WriteLine($"{fileName}.exe");
+            try 
+            { 
+                writer.WriteLine($"{fileName}.exe");
+            }
+            catch 
+            { 
+            
+            }
         }
         private void CloseConsole() 
         {

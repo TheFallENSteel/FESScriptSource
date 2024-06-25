@@ -1,25 +1,25 @@
 U2
 T1
-L0|0|Use operator
+L4|0|Use operator
 H|#include <cmath>
-M0|1|&+|-|*|/|%
+M3|1|&+|-|*|/|%
 I0|1
 I1|1
-O0|1
+O2|1
 END
-if(M0 == "+") 
+if(M3 == "+") 
 {
-    O0 = I0 + I1;
+    O2 = I0 + I1;
 }
-else if(M0 == "-")
+else if(M3 == "-")
 {
-    O0 = I0 - I1;
+    O2 = I0 - I1;
 }
-else if(M0 == "*")
+else if(M3 == "*")
 {
-    O0 = I0 * I1;
+    O2 = I0 * I1;
 }
-else if(M0 == "/")
+else if(M3 == "/")
 {
     if (I1 == 0) 
     {
@@ -28,10 +28,10 @@ else if(M0 == "/")
     }
     else 
     {
-        O0 = I0 / I1;   
+        O2 = I0 / I1;   
     }
 }
-else if(M0 == "%")
+else if(M3 == "%")
 {
     if (I1 == 0) 
     {
@@ -40,6 +40,6 @@ else if(M0 == "%")
     }
     else 
     {
-        O0 = std::fmod(I0,I1); 
+        O2 = std::fmod(I0,I1); 
     }
 }

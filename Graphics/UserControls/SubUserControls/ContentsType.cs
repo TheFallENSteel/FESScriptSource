@@ -15,19 +15,8 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
         public ContentArgs.ContentArgs ContentArgs;
 
         public System.Type type;
-        public int Id 
-        { 
-            get 
-            {
-                return id;
-            }
-            set
-            {
-                id = value;
-            }
-        }
+        public int ID { get; set; }
         public bool isCompiler;
-        private int id;
         public int collumn;
         public string text;
 
@@ -52,7 +41,7 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
                 {
                     name = "M";
                 }
-                return name + Id;
+                return name + ID;
             }
         }
     }

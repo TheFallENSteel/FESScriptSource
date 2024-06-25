@@ -1,12 +1,12 @@
 U8
 T0
 L0|0|While
-O0|5
-O1|0
-I0|0
+O1|64
+O2|0
+I3|0
 IC1|4
 END
-if (I1) 
+if (I3) 
 {
     return 0;
 }
