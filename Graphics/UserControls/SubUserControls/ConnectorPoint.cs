@@ -16,7 +16,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FESScript2.Graphics.UserControls.SubUserControls
+namespace FESScript.Graphics.UserControls.SubUserControls
 {
     public class ConnectorPoint : UserControl
     {
@@ -29,7 +29,7 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
 
         public static Canvas Canvas 
         { 
-            get => MainWindow.mainWindow.mainCanvas;
+            get => App.Window.mainCanvas;
         }
 
         public ConnectorPoint()

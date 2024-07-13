@@ -12,7 +12,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FESScript2.Graphics.SupportWindow
+namespace FESScript.Graphics.SupportWindow
 {
     public class ExpanderWindow : UserControl
     {

@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Windows.Media;
-using FESScript2.Graphics.UserControls;
-using FESScript2.Graphics;
+using FESScript.Graphics.UserControls;
+using FESScript.Graphics.UserControls.SubUserControls;
+using FESScript.Graphics.UserControls.SubUserControls.ContentArgs;
+using FESScript.Graphics;
 using System.Windows.Controls;
 
-namespace FESScript2.CodeWorks.BlockCreation
+namespace FESScript.CodeWorks.BlockCreation
 {
-    public static class BlockRecreation
+    /*public static class BlockRecreation
     {
         /// <summary>
         /// Specifies in which row is the context grid.
@@ -23,9 +25,9 @@ namespace FESScript2.CodeWorks.BlockCreation
         /// <param name="blockTemplate">Template with data to recreate block.</param>
         /// <param name="block">Reference to block.</param>
 
-        public static void RecreateBlock(BlockType blockTemplate, out Block block, bool subscribeToEvents = true, bool show = true)
+        public static void RecreateBlock(OldBlockType blockTemplate, out OldBlock block, bool subscribeToEvents = true, bool show = true)
         {
-            block = new Block(show, subscribeToEvents);
+            block = new OldBlock(show, subscribeToEvents);
             block.IsTabStop = false;
             block.grid.ColumnDefinitions.Add(new ColumnDefinition() { Name = "InputDots", Width = System.Windows.GridLength.Auto });
             block.grid.ColumnDefinitions.Add(new ColumnDefinition() { Name = "Contents", Width = System.Windows.GridLength.Auto });
@@ -38,7 +40,7 @@ namespace FESScript2.CodeWorks.BlockCreation
             block.Name = blockTemplate.Name + block.ID;
             if (blockTemplate.ID == 0)
             {
-                Block startPreview = block;
+                OldBlock startPreview = block;
                 startPreview.Dispatcher.BeginInvoke(new Action(() =>
                 {
                     MainWindow.mainWindow.Start = startPreview;
@@ -52,9 +54,9 @@ namespace FESScript2.CodeWorks.BlockCreation
         /// <param name="type">Type of block.</param>
         /// <param name="block">Reference to block.</param>
 
-        private static void RecreateBackground(Graphics.UserControls.SubUserControls.Type type, ref Block block)
+        private static void RecreateBackground(Type type, ref OldBlock block)
         {
-            Graphics.UserControls.SubUserControls.BlockBackground background = new Graphics.UserControls.SubUserControls.BlockBackground() { Type = type, StrokeThickness = "5", Stroke = CustomBrushes.StrokesBlock1, MinHeight = 25 };
+            BlockBackground background = new BlockBackground() { Type = type, StrokeThickness = "5", Stroke = CustomBrushes.StrokesBlock1, MinHeight = 25 };
             Grid.SetColumnSpan(background, int.MaxValue);
             Grid.SetRowSpan(background, int.MaxValue);
             block.grid.Children.Add(background);
@@ -66,7 +68,7 @@ namespace FESScript2.CodeWorks.BlockCreation
         /// <param name="dotTypes">Struct containing data to recreate dots.</param>
         /// <param name="block">Reference to block.</param>
 
-        private static void RecreateDots(List<Graphics.UserControls.SubUserControls.DotsType> dotTypes, ref Block block)
+        private static void RecreateDots(List<DotsType> dotTypes, ref OldBlock block)
         {
             Grid inputGrid = new Grid();
             Grid outputGrid = new Grid();
@@ -75,19 +77,19 @@ namespace FESScript2.CodeWorks.BlockCreation
 
             int ioOutCount = 0;
             int ioInCount = 0;
-            foreach (Graphics.UserControls.SubUserControls.DotsType dotType in dotTypes)
+            foreach (DotsType dotType in dotTypes)
             {
-                Graphics.UserControls.SubUserControls.Dots dot = new Graphics.UserControls.SubUserControls.Dots();
+                Dots dot = new Dots();
                 dot.DotType = dotType.dotType;
                 dot.ID = dotType.ID;
                 dot.IO = dotType.io;
                 dot.BlockParent = block;
                 dot.isConditional = dotType.isConditional;
-                if (dotType.io == Graphics.UserControls.SubUserControls.IO.Input)
+                if (dotType.io == IO.Input)
                 {
                     inputGrid.RowDefinitions.Add(new RowDefinition());
                     dot.Padding = new System.Windows.Thickness(10, 0, 0, 0);
-                    if (dotType.dotType != Graphics.UserControls.SubUserControls.Type.Action && dotType.dotType != Graphics.UserControls.SubUserControls.Type.SubAction)
+                    if (dotType.dotType != Type.Action && dotType.dotType != Type.SubAction)
                     {
                         block.InputNonActionDots.Add(dot);
                     }
@@ -95,11 +97,11 @@ namespace FESScript2.CodeWorks.BlockCreation
                     Grid.SetRow(dot, ioInCount);
                     ioInCount++;
                 }
-                else if (dotType.io == Graphics.UserControls.SubUserControls.IO.Output)
+                else if (dotType.io == IO.Output)
                 {
                     outputGrid.RowDefinitions.Add(new RowDefinition());
                     dot.Padding = new System.Windows.Thickness(0, 0, 10, 0);
-                    if (dotType.dotType == Graphics.UserControls.SubUserControls.Type.Action || dotType.dotType == Graphics.UserControls.SubUserControls.Type.SubAction)
+                    if (dotType.dotType == Type.Action || dotType.dotType == Type.SubAction)
                     {
                         block.ActionoutputDots.Add(dot);
                     }
@@ -125,16 +127,16 @@ namespace FESScript2.CodeWorks.BlockCreation
         /// <param name="contentTypes">Struct containing data to recreate contents.</param>
         /// <param name="block">Reference to block.</param>
 
-        private static void RecreateContents(List<Graphics.UserControls.SubUserControls.ContentsType> contentTypes, ref Block block)
+        private static void RecreateContents(List<ContentsType> contentTypes, ref OldBlock block)
         {
             Grid contentGrid = new Grid();
             Grid.SetColumn(contentGrid, contentGridColumn);
-            foreach (Graphics.UserControls.SubUserControls.ContentsType contentType in contentTypes)
+            foreach (ContentsType contentType in contentTypes)
             {
                 contentGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = System.Windows.GridLength.Auto });
-                if (contentType.type == typeof(Graphics.UserControls.SubUserControls.TextLabel))
+                if (contentType.type == typeof(TextLabel))
                 {
-                    Graphics.UserControls.SubUserControls.TextLabel content = new Graphics.UserControls.SubUserControls.TextLabel();
+                    TextLabel content = new TextLabel();
                     SetContent(content, contentType, ref block);
                     contentGrid.Children.Add(content);
                 }
@@ -145,32 +147,32 @@ namespace FESScript2.CodeWorks.BlockCreation
                     block.contentsInteractive.Add(content);
                     contentGrid.Children.Add(content);
                 }
-                else if (contentType.type == typeof(Graphics.UserControls.SubUserControls.Checkbox))
+                else if (contentType.type == typeof(Checkbox))
                 {
-                    Graphics.UserControls.SubUserControls.Checkbox content = new Graphics.UserControls.SubUserControls.Checkbox();
+                    Checkbox content = new Checkbox();
                     SetContent(content, contentType, ref block);
                     content.Margin = new System.Windows.Thickness(0, 12.5, 0, 0);
                     block.contentsInteractive.Add(content);
                     contentGrid.Children.Add(content);
                 }
-                else if (contentType.type == typeof(Graphics.UserControls.SubUserControls.Combobox))
+                else if (contentType.type == typeof(Combobox))
                 {
-                    Graphics.UserControls.SubUserControls.Combobox content = new Graphics.UserControls.SubUserControls.Combobox();
+                    Combobox content = new Combobox();
                     SetContent(content, contentType, ref block);
-                    content.ItemsSource = ((Graphics.UserControls.SubUserControls.ContentArgs.ComboBoxArgs)contentType.ContentArgs).elements;
+                    content.ItemsSource = ((ComboBoxArgs)contentType.ContentArgs).elements;
                     block.contentsInteractive.Add(content);
                     contentGrid.Children.Add(content);
                 }
             }
             block.grid.Children.Add(contentGrid);
         }
-        private static void SetContent(object content, Graphics.UserControls.SubUserControls.ContentsType contentType, ref Block block)
+        private static void SetContent(object content, ContentsType contentType, ref OldBlock block)
         {
-            ((Graphics.UserControls.SubUserControls.IContents)content).ID = contentType.ID;
-            ((Graphics.UserControls.SubUserControls.IContents)content).Text = contentType.text;
-            ((Graphics.UserControls.SubUserControls.IContents)content).IsCompiler = contentType.isCompiler;
+            ((IContents)content).ID = contentType.ID;
+            ((IContents)content).Text = contentType.text;
+            ((IContents)content).IsCompiler = contentType.isCompiler;
             Grid.SetColumn((Control)content, contentType.collumn);
             ((Control)content).Padding = new System.Windows.Thickness(2.5, 0, 2.5, 0);
         }
-    }
+    }*/
 }

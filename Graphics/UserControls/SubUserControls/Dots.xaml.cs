@@ -12,12 +12,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FESScript2.Graphics.UserControls.SubUserControls
+namespace FESScript.Graphics.UserControls.SubUserControls
 {
     /// <summary>
     /// Interaction logic for Dots.xaml
     /// </summary>
-    public partial class Dots : UserControlPlus, CodeWorks.IName
+    /*public partial class Dots : UserControlPlus, CodeWorks.IName
     {
         public Dots()
         {
@@ -35,7 +35,7 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
             get 
             {
                 Point point = this.TranslatePoint(new Point(0, 0), MainWindow.mainWindow.mainCanvas);
-                Block block = ((Block)((Grid)((Grid)this.Parent).Parent).Parent);
+                OldBlock block = ((OldBlock)((Grid)((Grid)this.Parent).Parent).Parent);
                 Matrix transforms = block.RenderTransform.Value;
 
                 Point ellipsePoint = new Point((ellipse.Width / 2) + this.Padding.Left, (ellipse.Height / 2) + this.Padding.Top) * transforms;
@@ -61,7 +61,7 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
 
         public Block BlockParent;
 
-        public Dots ConnectedTo { get => connection == null ? null : connection.ConnectedTo(this); }
+        //public Dots ConnectedTo { get => connection == null ? null : connection.ConnectedTo(this); }
 
         public IO IO;
 
@@ -69,11 +69,11 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
 
         private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (Connection.CurrentConnection == null) connection.StartConnection(this);
+            //if (Connection.CurrentConnection == null) connection.StartConnection(this);
         }
         private void Grid_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (Connection.CurrentConnection != null) Connection.CurrentConnection.FinishConnection(this);
+            //if (Connection.CurrentConnection != null) Connection.CurrentConnection.FinishConnection(this);
         }
-    }
+    }*/
 }

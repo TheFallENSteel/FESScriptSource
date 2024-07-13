@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net8.0-windows7.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <PackageId>FESScript</PackageId>
     <Authors>Martin Komárek</Authors>
@@ -19,19 +19,39 @@
     <DocumentationFile></DocumentationFile>
     <FileAlignment>512</FileAlignment>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <FileAlignment>512</FileAlignment>
     <Optimize>False</Optimize>
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <WarningLevel>9999</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="bin\**" />
+    <Compile Remove="Graphics\UserControls\SubUserControls\**" />
     <EmbeddedResource Remove="bin\**" />
+    <EmbeddedResource Remove="Graphics\UserControls\SubUserControls\**" />
     <None Remove="bin\**" />
+    <None Remove="Graphics\UserControls\SubUserControls\**" />
     <Page Remove="bin\**" />
+    <Page Remove="Graphics\UserControls\SubUserControls\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="CodeWorks\BlockCreation\BlockRecreation.cs" />
+    <Compile Remove="CodeWorks\BlockCreation\Pre3Loader.cs" />
+    <Compile Remove="Graphics\UserControls\Connecting\Connector.cs" />
+    <Compile Remove="Graphics\UserControls\OldBlock.cs" />
+    <Compile Remove="Graphics\UserControls\OldBlockType.cs" />
+    <Compile Remove="Graphics\UserControls\UserControlPlus.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Graphics\UserControls\SubUserControls\ConnectorPoint.cs" />
+    <Compile Include="Graphics\UserControls\SubUserControls\Menu.xaml.cs" />
   </ItemGroup>
 
 
@@ -112,6 +132,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Graphics\Windows\Displays\ContentDisplay.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Graphics\Windows\Displays\DotDisplay.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -144,6 +170,12 @@
   <ItemGroup>
     <Folder Include="FESScriptFiles\AppFiles\Blocks\Precompiled\" />
     <Folder Include="FESScriptFiles\AppFiles\Projects\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="Graphics\UserControls\SubUserControls\Menu.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
 </Project>

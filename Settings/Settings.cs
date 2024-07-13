@@ -1,6 +1,4 @@
-﻿using FESScript2.Graphics.UserControls;
-using FESScript2.Graphics.UserControls.SubUserControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,7 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Controls.Primitives;
 using System.Windows.Shapes;
 
-namespace FESScript2.Settings
+namespace FESScript.Settings
 {
     public static class Settings
     {

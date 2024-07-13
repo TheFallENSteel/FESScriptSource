@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using FESScript2.Graphics.UserControls;
+using FESScript.Graphics.UserControls;
 
-namespace FESScript2.CodeWorks.BlockCreation
+namespace FESScript.CodeWorks.BlockCreation
 {
-    public static class Loader
+    public static class Pre3Loader
     {
 
-        private const char splitChar = '|';
-        private const char dataPackSplitChar = '&';
+        //private const char splitChar = '|';
+        //private const char dataPackSplitChar = '&';
 
         /// <summary>
         /// Loads all of the block design from block directory
@@ -19,7 +19,7 @@ namespace FESScript2.CodeWorks.BlockCreation
         public static void Load() 
         {
             //Settings.Settings.LoadSettings();
-            if (!Directory.Exists(Directories.Blocks)) 
+            /*if (!Directory.Exists(Directories.Blocks)) 
             {
                 Directory.CreateDirectory(Directories.Blocks);
             }
@@ -34,7 +34,7 @@ namespace FESScript2.CodeWorks.BlockCreation
                 //    continue;
                 //}
             }
-            Transpiler.GenerateFullCpp.CompileFile();
+            Transpiler.GenerateFullCpp.CompileFile();*/
         }
 
         /// <summary>
@@ -43,12 +43,12 @@ namespace FESScript2.CodeWorks.BlockCreation
         /// <param name="path">Path of the file.</param>
         /// <param name="name">Name of the file.</param>
 
-        private static void LoadBlock(string path, string name) 
+        /*private static void LoadBlock(string path, string name) 
         {
             bool designEnd = false;
             string currentFile = Path.Combine(path, name);
             StreamReader reader = new StreamReader(currentFile);
-            BlockType block = new BlockType(0,"", "", Graphics.UserControls.SubUserControls.Type.Error);
+            OldBlockType block = new OldBlockType(0,"", "", Type.Error);
             block.Name = Path.GetFileNameWithoutExtension(currentFile);
             int exitCode = -1;
             while (!reader.EndOfStream && !designEnd) 
@@ -87,7 +87,7 @@ namespace FESScript2.CodeWorks.BlockCreation
         /// <param name="line">String to analyze.</param>
         /// <param name="block">BlockType in which data will be loaded.</param>
 
-        private static int LoadLine(string line, BlockType block, ref bool designEnd, ref int exitCode) 
+        private static int LoadLine(string line, OldBlockType block, ref bool designEnd, ref int exitCode) 
         {
             byte space;
             bool compiler = false;
@@ -102,8 +102,8 @@ namespace FESScript2.CodeWorks.BlockCreation
                     Graphics.UserControls.SubUserControls.DotsType dot1 = new Graphics.UserControls.SubUserControls.DotsType()
                     {
                         ID = int.Parse(args1[0]),
-                        dotType = (Graphics.UserControls.SubUserControls.Type)int.Parse(args1[1]),
-                        io = Graphics.UserControls.SubUserControls.IO.Input,
+                        dotType = (Type)int.Parse(args1[1]),
+                        io = IO.Input,
                         isConditional = true
                     };
                     block.Dots.Add(dot1);
@@ -114,8 +114,8 @@ namespace FESScript2.CodeWorks.BlockCreation
                     Graphics.UserControls.SubUserControls.DotsType dot1 = new Graphics.UserControls.SubUserControls.DotsType()
                     {
                         ID = int.Parse(args1[0]),
-                        dotType = (Graphics.UserControls.SubUserControls.Type)int.Parse(args1[1]),
-                        io = Graphics.UserControls.SubUserControls.IO.Input
+                        dotType = (Type)int.Parse(args1[1]),
+                        io = IO.Input
                     };
                     block.Dots.Add(dot1);
                 }
@@ -125,13 +125,13 @@ namespace FESScript2.CodeWorks.BlockCreation
                 Graphics.UserControls.SubUserControls.DotsType dot2 = new Graphics.UserControls.SubUserControls.DotsType()
                 {
                     ID = int.Parse(args2[0]),
-                    dotType = (Graphics.UserControls.SubUserControls.Type)int.Parse(args2[1]),
-                    io = Graphics.UserControls.SubUserControls.IO.Output
+                    dotType = (Type)int.Parse(args2[1]),
+                    io = IO.Output
                 };
                 block.Dots.Add(dot2);
                 break;
             case 'T': //Nastavuje typ blocku (barvu)
-                block.type = (Graphics.UserControls.SubUserControls.Type)int.Parse(line.Substring(1));
+                block.type = (Type)int.Parse(line.Substring(1));
                 break;
             case 'U': //Nastavuje unikátní identifikátor
                 block.ID = int.Parse(line.Substring(1));
@@ -239,6 +239,6 @@ namespace FESScript2.CodeWorks.BlockCreation
                 break;
             }
             return exitCode;
-        }
+        }*/
     }
 }

@@ -7,8 +7,9 @@ using System.IO;
 using System.Threading;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using FESScript.Settings;
 
-namespace FESScript2.Console
+namespace FESScript.CodeWorks.Console
 {
     /// <summary>
     /// Special Console window that runs user programs.
@@ -60,7 +61,7 @@ namespace FESScript2.Console
             isOpened = true;
             ConsoleCpp = new Process();
             Application.Current.Exit += (sender, args) => { writer.WriteLine("taskkill OutputFile.exe"); ConsoleCpp.Kill(); ConsoleCpp.Close(); };
-            ConsoleCpp.StartInfo = new ProcessStartInfo("CMD.EXE", null);
+            ConsoleCpp.StartInfo = new ProcessStartInfo("CMD.EXE");
             ConsoleCpp.StartInfo.RedirectStandardInput = true;
             ConsoleCpp.StartInfo.RedirectStandardOutput = true;
             ConsoleCpp.StartInfo.RedirectStandardError = true;
@@ -95,16 +96,17 @@ namespace FESScript2.Console
         private void ConsoleResponse() 
         {
             writer.WriteLine("prompt $");
-            OpenProgramFile(CodeWorks.Transpiler.GenerateFullCpp.fileName); //ěšžčřčž
+            //OpenProgramFile(CodeWorks.Transpiler.GenerateFullCpp.fileName); //ěšžčřčž
             byte triedCount = 0;
             ReadMessage(true);
             ReadError(triedCount);
-            while (isOpened && MainWindow.isRunning)
+            while (isOpened && MainWindow.IsRunning)
             {
                 if (ConsoleCpp.HasExited) 
                 {
                     isOpened = false;
                 }
+            }
                     /*if (error.Peek() != 0)
                     {
                         toRead = reader.ReadLine();
@@ -137,7 +139,6 @@ namespace FESScript2.Console
                         }
                     }
                     triedCount++;*/
-            }
             CloseConsole();
         }
 
@@ -172,7 +173,7 @@ namespace FESScript2.Console
                     if (toReadError == "'OutputFile.exe' is not recognized as an internal or external command," && triedCount < 10)
                     {
                         Thread.Sleep(1000);
-                        OpenProgramFile(CodeWorks.Transpiler.GenerateFullCpp.fileName);
+                        //OpenProgramFile(CodeWorks.Transpiler.GenerateFullCpp.fileName);
                         triedCount++;
                     }
                 }
@@ -211,13 +212,16 @@ namespace FESScript2.Console
         }
         private void CloseConsole() 
         {
-            writer.WriteLine("taskkill OutputFile.exe");
-            writer.Close();
-            ConsoleCpp.StandardOutput.Close();
-            ConsoleCpp.StandardError.Close();
-            ConsoleCpp.Kill();
-            ConsoleCpp.Close();
-            Thread.CurrentThread.Join();
+            try 
+            { 
+                writer.WriteLine("taskkill OutputFile.exe");
+                writer.Close();
+                ConsoleCpp.StandardOutput.Close();
+                ConsoleCpp.StandardError.Close();
+                ConsoleCpp.Kill();
+                ConsoleCpp.Close();
+                Thread.CurrentThread.Join();
+            } catch { }
         }
     }
 }

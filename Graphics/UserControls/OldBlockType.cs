@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
-using FESScript2.Graphics.UserControls.SubUserControls;
+using FESScript.Graphics.UserControls.SubUserControls;
 
-namespace FESScript2.Graphics.UserControls
+namespace FESScript.Graphics.UserControls
 {
     /// <summary>
     /// Struct used to reconstruct block.
     /// </summary>
 
-    public class BlockType
+    public class OldBlockType
     {
-        public static List<BlockType> global = new List<BlockType>();
+        public static List<OldBlockType> global = new List<OldBlockType>();
 
         public bool CreateFunction { get; set; }
         public bool IsBodyless { get; set; }
@@ -22,7 +22,7 @@ namespace FESScript2.Graphics.UserControls
         public List<DotsType> Dots { get; set; }
         public List<ContentsType> Contents { get; set; }
 
-        public BlockType(int id, string category, string name, SubUserControls.Type type)
+        public OldBlockType(int id, string category, string name, Type type)
         {
             CreateFunction = true;
             this.Category = category;
@@ -52,7 +52,7 @@ namespace FESScript2.Graphics.UserControls
             return false;
         }
 
-        public static BlockType Find(int id)
+        public static OldBlockType Find(int id)
         {
             for (int i = 0; i < global.Count; i++)
             {

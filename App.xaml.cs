@@ -6,14 +6,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace FESScript2
+namespace FESScript
 {
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
-
+        public static MainWindow Window 
+        {
+            get 
+            { 
+                lock (Current.MainWindow) 
+                { 
+                    return (MainWindow)Current.MainWindow;
+                }
+            }
+        }
         public delegate void CategoryEventHandler(CodeWorks.BlockCreation.Category category);
         public static event CategoryEventHandler CategoryChanged;
 

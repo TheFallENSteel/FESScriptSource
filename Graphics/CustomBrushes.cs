@@ -1,6 +1,6 @@
 ﻿using System.Windows.Media;
 
-namespace FESScript2.Graphics
+namespace FESScript.Graphics
 {
     public static class CustomBrushes
     {
@@ -15,6 +15,7 @@ namespace FESScript2.Graphics
         public static SolidColorBrush TopBar        => new SolidColorBrush(CustomColors.TopBar);
         public static SolidColorBrush LeftBar       => new SolidColorBrush(CustomColors.LeftBar);
         public static SolidColorBrush SubAction     => new SolidColorBrush(CustomColors.SubAction);
+        public static SolidColorBrush Error         => new SolidColorBrush(CustomColors.Error);
     }
     public static class CustomColors
     {
@@ -29,5 +30,6 @@ namespace FESScript2.Graphics
         public static Color TopBar          => Colors.DarkOrange;
         public static Color LeftBar         => Colors.Orange;
         public static Color SubAction       => Colors.Peru;
+        public static Color Error           => Colors.DeepPink;
     }
 }

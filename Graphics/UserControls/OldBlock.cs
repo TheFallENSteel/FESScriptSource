@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
-using FESScript2.Graphics.UserControls.SubUserControls;
+using FESScript.Graphics.UserControls.SubUserControls;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using FESScript2.CodeWorks.Functions;
+using FESScript.CodeWorks.Functions;
 
-namespace FESScript2.Graphics.UserControls
+namespace FESScript.Graphics.UserControls
 {
     /// <summary>
     /// The visual block.
     /// </summary>
 
-    public class Block : UserControlPlus, CodeWorks.Functions.IMoveable, CodeWorks.IName
+    public class OldBlock : UserControlPlus, IMoveable, CodeWorks.IName
     {
-        public static List<Block> blocks = new List<Block>();
+        public static List<OldBlock> blocks = new List<OldBlock>();
 
         public event EventHandler OnMove;
 
@@ -24,7 +24,7 @@ namespace FESScript2.Graphics.UserControls
         public Point Offset { get; set; }
         public int ID { get => blocks.IndexOf(this); }
         public bool IsShown { get; set; }
-        public BlockType blockType {  get; set; }
+        public OldBlockType blockType {  get; set; }
         public int BlockTypeId { get; set; }
 
         /// <summary>
@@ -43,10 +43,10 @@ namespace FESScript2.Graphics.UserControls
             {
                 DeleteBlock();
             }
-            /*if ((e.Key == Key.Z) && isClicked)
+            if ((e.Key == Key.Z) && isClicked)
             {
                 RenderTransform = new ScaleTransform(5, 5);
-            }*/
+            }
         }
 
         public string GetValueOfRelatives(string contentName) 
@@ -173,7 +173,7 @@ namespace FESScript2.Graphics.UserControls
             this.IsShown = false;
         }
 
-        public Block(bool show, bool subscribeToEvents) : base()
+        public OldBlock(bool show, bool subscribeToEvents) : base()
         {
             if (subscribeToEvents) EventSubscribe();
             

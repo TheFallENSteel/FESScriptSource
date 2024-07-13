@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
 
-namespace FESScript2.Graphics.UserControls
+namespace FESScript.Graphics.UserControls
 {
     public class UserControlPlus : UserControl
     {

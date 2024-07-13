@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
-using FESScript2.Graphics.UserControls;
 using System.Windows.Controls;
 
-namespace FESScript2.CodeWorks.Functions
+namespace FESScript.CodeWorks.Functions
 {
 
     /// <summary>
@@ -67,15 +66,15 @@ namespace FESScript2.CodeWorks.Functions
         {
             if (IsClicked && IsMovable && e.LeftButton == MouseButtonState.Pressed)
             {
-                double pointX = e.GetPosition((UIElement)this).X - Offset.X;
-                double pointY = e.GetPosition((UIElement)this).Y - Offset.Y;
+                double pointX = e.GetPosition((UIElement)sender).X - Offset.X;
+                double pointY = e.GetPosition((UIElement)sender).Y - Offset.Y;
                 this.Move(pointX, pointY);
                 lastSelected = this;
             }
             else if (IsClicked) 
             {
                 IsClicked = false;
-                ((UIElement)this).ReleaseMouseCapture();
+                ((UIElement)sender).ReleaseMouseCapture();
             }
         }
 
@@ -85,9 +84,9 @@ namespace FESScript2.CodeWorks.Functions
 
         public void MouseDown(object sender, MouseEventArgs e)
         {
-            Keyboard.Focus((UIElement)this);
-            Mouse.Capture((UIElement)this);
-            Offset = e.GetPosition((UIElement)this);
+            Keyboard.Focus((UIElement)sender);
+            Mouse.Capture((UIElement)sender);
+            Offset = e.GetPosition((UIElement)sender);
             IsClicked = true;
         }
 

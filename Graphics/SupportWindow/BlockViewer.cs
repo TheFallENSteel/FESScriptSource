@@ -12,7 +12,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FESScript2.Graphics.SupportWindow
+namespace FESScript.Graphics.SupportWindow
 {
     public class BlockViewer : UserControl
     {
@@ -38,7 +38,7 @@ namespace FESScript2.Graphics.SupportWindow
             }
         }
 
-        public BlockViewer(double height, CodeWorks.BlockCreation.Category category, Expander expander)
+        public BlockViewer(CodeWorks.BlockCreation.Category category, Expander expander)
         {
             this.expander = expander;
             Width = 0;
@@ -81,7 +81,7 @@ namespace FESScript2.Graphics.SupportWindow
         private void ShowCategory() 
         {
             expander.UpdateHeight();
-            if (isShown && itemsControl.ItemsSource != currentCategory.blocks)
+            if (isShown && itemsControl.ItemsSource != currentCategory.blockPlacements)
             {
                 Hide(true);
             }
@@ -113,7 +113,7 @@ namespace FESScript2.Graphics.SupportWindow
         public void Show()
         {
             storyboardSecondPanel.Stop();
-            itemsControl.ItemsSource = currentCategory.blocks;
+            itemsControl.ItemsSource = currentCategory.blockPlacements;
             //this.Width = double.NaN;
             itemsControl.UpdateLayout();
             doubleAnimationSecondPanel.From = this.ActualWidth;

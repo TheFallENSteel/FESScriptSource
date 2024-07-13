@@ -2,8 +2,9 @@
 using System.Windows;
 using System.Collections.Generic;
 using System.Text;
+using FESScript;
 
-namespace FESScript2
+namespace FESScript.Settings
 {
     public static class Directories
     {
@@ -16,29 +17,12 @@ namespace FESScript2
         { 
             get 
             {
-                System.IO.Directory.CreateDirectory(Settings.Settings.DirectoryProperty);
-                return Settings.Settings.DirectoryProperty;
+                System.IO.Directory.CreateDirectory(Settings.DirectoryProperty);
+                return Settings.DirectoryProperty;
             }
         }
 
-        public static string SaveName 
-        { 
-            get 
-            {
-                return MainWindow.SaveName;
-            }
-            set
-            {
-                try 
-                { 
-                    MainWindow.SaveName = value;
-                }
-                catch 
-                { 
-                    
-                }
-            }
-        }
+        public static string SaveName { get => App.Window.SaveName; }
 
         
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FESScript2.Graphics.UserControls.SubUserControls.ContentArgs
+namespace FESScript.Graphics.UserControls.SubUserControls.ContentArgs
 {
     public class ComboBoxArgs : ContentArgs
     {

@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FESScript2.Graphics.SupportWindow
+namespace FESScript.Graphics.SupportWindow
 {
     /// <summary>
     /// Interaction logic for TextSpace.xaml

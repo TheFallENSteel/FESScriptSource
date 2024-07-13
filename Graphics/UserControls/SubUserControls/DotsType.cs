@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FESScript2.Graphics.UserControls.SubUserControls
+namespace FESScript.Graphics.UserControls.SubUserControls
 {
 
     /// <summary>

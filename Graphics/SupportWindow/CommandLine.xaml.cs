@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FESScript2.Graphics.SupportWindow
+namespace FESScript.Graphics.SupportWindow
 {
     /// <summary>
     /// Interaction logic for CommandLine.xaml
@@ -48,7 +48,7 @@ namespace FESScript2.Graphics.SupportWindow
             if (e.Key == Key.Enter) 
             {
                 
-                ((Console.Console)((Grid)Parent).Parent).Write(Text);
+                ((FESScript.CodeWorks.Console.Console)((Grid)Parent).Parent).Write(Text);
                 Text = "";
             }
         }

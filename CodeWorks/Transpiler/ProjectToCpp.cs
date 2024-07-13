@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using FESScript2.Graphics.UserControls;
 using System.IO;
 using System.Linq;
-using FESScript2.Graphics.UserControls.SubUserControls;
 
-namespace FESScript2.CodeWorks.Transpiler
+namespace FESScript.CodeWorks.Transpiler
 {
     public static class ProjectToCpp
     {
-        private static List<Block> initializedBlocks = new List<Block>();
-        public static void GenerateCppFile(Block start) 
-        {
-            if (start != null) 
+        //private static List<OldBlock> initializedBlocks = new List<OldBlock>();
+        //public static void GenerateCppFile(OldBlock start) 
+        //{
+            /*if (start != null) 
             { 
                 string commands = "";
                 string projectFileName = $@"\{Directories.programName}.cpp";
@@ -40,14 +38,14 @@ int main()
                     File.WriteAllText(path + projectFileName, fileString);
                 }
             }
-            initializedBlocks = new List<Block>();
+            initializedBlocks = new List<OldBlock>();
         }
-        private static string InitializeBlock(Block block, ref string returnValue, bool shouldRunLoop = false, bool notContinue = false, bool reinitialize = false) 
+        private static string InitializeBlock(OldBlock block, ref string returnValue, bool shouldRunLoop = false, bool notContinue = false, bool reinitialize = false) 
         {
             if (!initializedBlocks.Contains(block) || reinitialize)
             {
                 initializedBlocks.Add(block);
-                List<Block> blocksToRun = new List<Block>();
+                List<OldBlock> blocksToRun = new List<OldBlock>();
                 foreach (Dots dot in block.InputNonActionDots)
                 {
                     if (dot.ConnectedTo != null)
@@ -56,7 +54,7 @@ int main()
                     }
                 }
                 blocksToRun = blocksToRun.Distinct().ToList();
-                foreach (Block blockX in blocksToRun)
+                foreach (OldBlock blockX in blocksToRun)
                 {
                     if (!blockX.blockType.IsBodyless)
                     {
@@ -66,7 +64,7 @@ int main()
                 string constructorParams = "";
                 for (int i = 0; i < block.dots.Count; i++)
                 {
-                    if (block.dots[i].IO == IO.Input && (block.dots[i].DotType != Graphics.UserControls.SubUserControls.Type.Action && block.dots[i].DotType != Graphics.UserControls.SubUserControls.Type.SubAction))
+                    if (block.dots[i].IO == IO.Input && (block.dots[i].DotType != Type.Action && block.dots[i].DotType != Type.SubAction))
                     {
                         if (block.dots[i].ConnectedTo != null && !block.dots[i].ConnectedTo.BlockParent.blockType.IsBodyless)
                         {
@@ -155,9 +153,9 @@ int main()
                         string nextblocks = "";
                         if (block.ActionoutputDots[i].ConnectedTo != null)
                         {
-                            Block subBlock = block.ActionoutputDots[i].ConnectedTo.BlockParent;
+                            OldBlock subBlock = block.ActionoutputDots[i].ConnectedTo.BlockParent;
                             InitializeBlock(subBlock, ref nextblocks, reinitialize: reinitialize);
-                            if (block.ActionoutputDots[i].DotType == Graphics.UserControls.SubUserControls.Type.Action)
+                            if (block.ActionoutputDots[i].DotType == Type.Action)
                             {
                                 cases += $@"case {block.ActionoutputDots[i].ID}:
     {{
@@ -166,7 +164,7 @@ int main()
     }}
 ";
                             }
-                            else if (block.ActionoutputDots[i].DotType == Graphics.UserControls.SubUserControls.Type.SubAction && !multipleSub)
+                            else if (block.ActionoutputDots[i].DotType == Type.SubAction && !multipleSub)
                             {
                                 multipleSub = true;
                                 afterCases += $@"{conditionString}
@@ -183,7 +181,7 @@ while({block.Name}condition == {block.ActionoutputDots[i].ID})
     }}
 ";
                             }
-                            else if (block.ActionoutputDots[i].DotType == Graphics.UserControls.SubUserControls.Type.SubAction && multipleSub)
+                            else if (block.ActionoutputDots[i].DotType == Type.SubAction && multipleSub)
                             {
                                 afterCases += $@"while({block.Name}condition == {block.ActionoutputDots[i].ID}) 
 {{
@@ -226,8 +224,8 @@ while({block.Name}condition == {block.ActionoutputDots[i].ID})
                     }
                 }
             }
-            return returnValue;
-        }
+            return returnValue;*/
+        //}
     }
 }
 

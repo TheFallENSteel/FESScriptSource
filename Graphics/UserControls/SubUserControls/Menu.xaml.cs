@@ -1,5 +1,4 @@
-﻿using FESScript2.Graphics.UserControls;
-using FESScript2.Graphics.UserControls.SubUserControls;
+﻿using FESScript.Graphics.UserControls.SubUserControls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,14 +14,19 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Threading;
+using FESScript.CodeWorks.BlockCreation.Blocks.Templates;
+using FESScript.CodeWorks.BlockCreation.Blocks.Placements;
+using FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents;
+using FESScript.CodeWorks.BlockCreation.Blocks.UserElements;
+using FESScript.Settings;
 
 
-namespace FESScript2.Graphics.UserControls.SubUserControls
+namespace FESScript.Graphics.UserControls.SubUserControls
 {
     /// <summary>
     /// Interaction logic for Menu.xaml
     /// </summary>
-    public partial class Menu : UserControlPlus
+    public partial class Menu : UserControl
     {
         public SupportWindow.Expander Expander;
         public Menu()
@@ -33,8 +37,26 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
 
         private void ConsoleStart()
         {
-            MainWindow.MainConsole = new Console.Console();
-            MainWindow.MainConsole.Show();
+            BlockPlacement block = new BlockPlacement(
+            new BlockTemplate(
+                new System.Collections.ObjectModel.ObservableCollection<DotTemplate>()
+                {
+                        new DotTemplate(Type.Boolean, IO.Input, 4),
+                        new DotTemplate(Type.Textual, IO.Output, 1),
+                        new DotTemplate(Type.Console, IO.Output, 2),
+                        new DotTemplate(Type.Numerical, IO.Input, 3),
+                },
+                new System.Collections.ObjectModel.ObservableCollection<ContentTemplate>()
+                {
+                        new ContentTemplate(typeof(CodeWorks.BlockCreation.Blocks.UserElements.Contents.TextBox), 4,"TextBox"),
+                },
+                Type.Numerical
+                )
+            {
+            }, null, App.Window.mainCanvas);
+            App.Window.MainConsole = new FESScript.CodeWorks.Console.Console();
+            //MainWindow.MainConsole.Show();
+
         }
 
 
@@ -44,7 +66,7 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
 
         private void EllipseSave_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            CodeWorks.Saving.Saver.SaveProject(Block.blocks, Directories.SaveName);
+            CodeWorks.Saving.Saver.SaveProject(BlockPlacement.blockPlacements, Directories.SaveName, App.Window);
         }
 
         /// <summary>
@@ -53,7 +75,7 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
 
         private void EllipseLoad_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            CodeWorks.Saving.Loader.LoadProject(Directories.SaveName);
+            CodeWorks.Saving.Loader.LoadProject(Directories.SaveName, App.Window);
         }
 
         /// <summary>
@@ -77,7 +99,7 @@ namespace FESScript2.Graphics.UserControls.SubUserControls
 
         private void ellipseCompile_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            CodeWorks.Transpiler.ProjectToCpp.GenerateCppFile(MainWindow.mainWindow.Start);
+            //CodeWorks.Transpiler.ProjectToCpp.GenerateCppFile(MainWindow.mainWindow.Start);
             CodeWorks.Transpiler.Compiler.CompileProject(Directories.SaveName, Directories.Directory);
         }
     }

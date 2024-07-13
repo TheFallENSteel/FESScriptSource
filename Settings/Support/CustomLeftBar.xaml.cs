@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FESScript2.Settings.Support
+namespace FESScript.Settings.Support
 {
     /// <summary>
     /// Interaction logic for CustomLeftBar.xaml

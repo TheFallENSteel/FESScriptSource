@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using FESScript2.Graphics.UserControls.SubUserControls;
+using FESScript.Graphics.UserControls.SubUserControls;
 using System;
 using System.Text;
 using System.Windows;
@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using System.Windows.Ink;
 using Microsoft.VisualBasic;
 
-/*namespace FESScript2.Graphics.UserControls
+/*namespace FESScript.Graphics.UserControls
 {
     public class Connect
     {

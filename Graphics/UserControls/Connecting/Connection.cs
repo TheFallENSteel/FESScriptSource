@@ -1,6 +1,4 @@
-﻿using FESScript2.Graphics.UserControls.SubUserControls;
-using FESScript2.Graphics.UserControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,16 +7,19 @@ using System.Windows;
 using System.Windows.Shapes;
 using System.Windows.Media;
 using System.Windows.Input;
-using FESScript2.CodeWorks.Functions;
+using FESScript.CodeWorks.Functions;
+using FESScript.CodeWorks.BlockCreation.Blocks.Templates;
+using FESScript.CodeWorks.BlockCreation.Blocks.Placements;
+using FESScript.Graphics.UserControls.Connecting;
 
-namespace FESScript2.Graphics.UserControls 
+namespace FESScript.Graphics.UserControls.Connecting
 {
     public class Connection
     {
 
         public static Connection CurrentConnection;
         
-        Dots[] dots = new Dots[2];
+        DotPlacement[] dots = new DotPlacement[2];
 
         Line Connector { get; set; }
 
@@ -27,7 +28,7 @@ namespace FESScript2.Graphics.UserControls
             Construct();
         }
 
-        private void Construct(Dots dot1 = null, Dots dot2 = null) 
+        private void Construct(DotPlacement dot1 = null, DotPlacement dot2 = null) 
         {
             this.Connector = new Line()
             {
@@ -38,51 +39,51 @@ namespace FESScript2.Graphics.UserControls
             };
             dots[0] = dot1;
             dots[1] = dot2;
-            if(dots[0] != null) Connector.Stroke = ColorsBrushes.TypeToBrush[dots[0].DotType];
+            if(dots[0] != null) Connector.Stroke = ColorsBrushes.TypeToBrush[dots[0].DotTemplate.Type];
             this.Connector.MouseDown += OnMouseClick;
         }
 
-        public Connection(Dots dot1, Dots dot2)
+        public Connection(DotPlacement dot1, DotPlacement dot2)
         {
             App.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                MainWindow.mainWindow.mainCanvas.Children.Add(this.Connector);
+                App.Window.mainCanvas.Children.Add(this.Connector);
                 OnUpdate(null, null);
             }), System.Windows.Threading.DispatcherPriority.Loaded);
             Construct(dot1, dot2);
             ConnectionCreation();
         }
 
-        public Dots[] Dots 
+        public DotPlacement[] Dots 
         { 
             get => this.dots; 
             set => this.dots = value; 
         }
 
-        public void StartConnection(Dots dot)
+        public void StartConnection(DotPlacement dot)
         {
             BreakConnection();
-            MainWindow.mainWindow.mainCanvas.Children.Add(this.Connector);
+            App.Window.mainCanvas.Children.Add(this.Connector);
             CurrentConnection = this;
             IMoveable.IsMovable = false;
             dots[0] = dot;
             Connector.IsHitTestVisible = false;
-            Connector.Stroke = ColorsBrushes.TypeToBrush[dot.DotType];
+            Connector.Stroke = ColorsBrushes.TypeToBrush[dot.DotTemplate.Type];
         }
 
         public void ContinueConnection(Point MousePosition) 
         { 
-            ChangePosition(dots[0].Connector.X, dots[0].Connector.Y, MousePosition.X, MousePosition.Y);
+            ChangePosition(dots[0].Dot.Connector.X, dots[0].Dot.Connector.Y, MousePosition.X, MousePosition.Y);
         }
 
-        public void FinishConnection(Dots dot)
+        public void FinishConnection(DotPlacement dot)
         {
             IMoveable.IsMovable = true;
             if (dot != null && CurrentConnection.CanConnect(CurrentConnection.dots[0], dot))
             {
-                dot.connection.BreakConnection();
+                dot.Connection.BreakConnection();
                 CurrentConnection.dots[1] = dot;
-                CurrentConnection.dots[1].connection = CurrentConnection;
+                CurrentConnection.dots[1].Connection = CurrentConnection;
                 ConnectionCreation();
             }
             else
@@ -95,27 +96,27 @@ namespace FESScript2.Graphics.UserControls
 
         private void ConnectionCreation() 
         { 
-            foreach (Dots dot in dots) 
+            foreach (DotPlacement dot in dots) 
             {
                 if (dot != null)
                 {
-                    dot.Connector.PropertyChanged += OnUpdate;
-                    dot.connection = this;
+                    dot.Dot.Connector.PropertyChanged += OnUpdate;
+                    dot.Connection = this;
                 }
             }
             Connector.IsHitTestVisible = true;
             OnUpdate(null, null);
         }
 
-        private void BreakConnection() 
+        public void BreakConnection() 
         {
-            MainWindow.mainWindow.mainCanvas.Children.Remove(this.Connector);
-            foreach (Dots dot in dots)
+            App.Window.mainCanvas.Children.Remove(this.Connector);
+            foreach (DotPlacement dot in dots)
             {
                 if (dot!=null) 
                 { 
-                    dot.Connector.PropertyChanged -= OnUpdate;
-                    dot.connection = new Connection();
+                    dot.Dot.Connector.PropertyChanged -= OnUpdate;
+                    dot.Connection = new Connection();
                 }
             }
             DeleteDots();
@@ -129,7 +130,7 @@ namespace FESScript2.Graphics.UserControls
 
         private void OnUpdate(object sender, EventArgs e) 
         {
-            ChangePosition(dots[0].Connector.X, dots[0].Connector.Y, dots[1].Connector.X, dots[1].Connector.Y);
+            ChangePosition(dots[0].Dot.Connector.X, dots[0].Dot.Connector.Y, dots[1].Dot.Connector.X, dots[1].Dot.Connector.Y);
         }
 
         private void ChangePosition(double X1, double Y1, double X2, double Y2) 
@@ -140,7 +141,7 @@ namespace FESScript2.Graphics.UserControls
             Connector.Y2 = Y2;
         }
 
-        public Dots ConnectedTo(Dots dot)
+        public DotPlacement ConnectedTo(DotPlacement dot)
         { 
             if (dots[0] == dot) 
             {
@@ -163,14 +164,13 @@ namespace FESScript2.Graphics.UserControls
             BreakConnection();
         }
 
-        private bool CanConnect(Dots dot1, Dots dot)
+        private bool CanConnect(DotPlacement dot1, DotPlacement dot)
         {
             return dot1 != null && dot != null
-                && dot1.IO != dot.IO
-                && dot1.BlockParent != dot.BlockParent
-                && dot1.IO != IO.Error && dot.IO != IO.Error
-                && (dot1.DotType != dot.DotType
-                || dot1.DotType.IsCompatible(dot.DotType));
+                && dot1.DotTemplate.IO != dot.DotTemplate.IO
+                && dot1.Parent != dot.Parent
+                && dot1.DotTemplate.IO != IO.Error && dot.DotTemplate.IO != IO.Error
+                && dot1.DotTemplate.Type.IsCompatible(dot.DotTemplate.Type);
         }
     }
 }

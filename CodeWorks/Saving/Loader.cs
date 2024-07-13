@@ -7,19 +7,22 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Xml;
 using System.Xml.Serialization;
-using FESScript2.Graphics.UserControls;
-using FESScript2.Graphics.UserControls.SubUserControls;
+using FESScript.CodeWorks.BlockCreation.Blocks;
+using FESScript.CodeWorks.BlockCreation.Blocks.Templates;
+using FESScript.CodeWorks.BlockCreation.Blocks.Placements;
+using FESScript.CodeWorks.BlockCreation.Blocks.UserElements;
+using FESScript.Graphics.UserControls.Connecting;
+using FESScript.Settings;
 
-namespace FESScript2.CodeWorks.Saving
+namespace FESScript.CodeWorks.Saving
 {
     public static class Loader
     {
-        private static Dictionary<int, Block> blocks;
+        private static Dictionary<int, BlockPlacement> blockPlacements = new Dictionary<int, BlockPlacement>();
 
-        public static void LoadProject(string fileName)
+        public static void LoadProject(string fileName, MainWindow mainWindow)
         {
-            Block.DestroyAll();
-            blocks = new Dictionary<int, Block>();
+            BlockPlacement.RemoveAll();
 
             string DirUri = Directories.Projects + @$"\{fileName}";
             string FileUri = DirUri + @"\Save.FESSave";
@@ -35,9 +38,9 @@ namespace FESScript2.CodeWorks.Saving
                 { 
                     SaveProjectData projectData = (SaveProjectData)serializer.Deserialize(reader);
 
-                    LoadProject(projectData);
+                    LoadProject(projectData, mainWindow);
 
-                    MainWindow.mainWindow.UpdateGlobalPosition();
+                    App.Window.UpdateGlobalPosition();
                 }
                 catch 
                 { 
@@ -49,11 +52,12 @@ namespace FESScript2.CodeWorks.Saving
             {
                 MessageBox.Show("File not found. You need to create one before loading.", "Error", MessageBoxButton.OK);
             }
+            blockPlacements.Clear();
         }
-        private static void LoadProject(SaveProjectData projectData)
+        private static void LoadProject(SaveProjectData projectData, MainWindow mainWindow)
         {
-            MainWindow.Zoom = projectData.Zoom;
-            MainWindow.mainWindow.CameraPosition = new Point(projectData.CameraX, projectData.CameraY);
+            mainWindow.Zoom = projectData.Zoom;
+            mainWindow.CameraPosition = new Point(projectData.CameraX, projectData.CameraY);
 
             for (int i = 0; i < projectData.Blocks.Count; i++)
             {
@@ -63,54 +67,55 @@ namespace FESScript2.CodeWorks.Saving
 
         private static void LoadBlock(SaveBlockData blockData)
         {
-            Block block = new Block(false, true);
 
-            LoadProperties(blockData, ref block);
-            LoadContentsData(blockData.ContentData, ref block);
-            LoadDotConnections(blockData.DotData, ref block);
+            BlockPlacement blockPlacement = new BlockPlacement(BlockTemplate.GetTemplate(blockData.BlockTemplateID), null, App.Window.mainCanvas);
+            LoadProperties(blockData, ref blockPlacement);
+            LoadContentsData(blockData.ContentData, ref blockPlacement);
+            LoadDotConnections(blockData.DotData, ref blockPlacement);
 
         }
 
-        private static void LoadProperties(SaveBlockData blockData, ref Block block)
-        {
-            BlockCreation.BlockRecreation.RecreateBlock(BlockType.Find(blockData.BlockTypeID), out block);
-            blocks.Add(blockData.ID, block);
-            block.Position = new Point(blockData.PositionX, blockData.PositionY);
+        private static void LoadProperties(SaveBlockData blockData, ref BlockPlacement blockPlacement)
+        {   
+            blockPlacements.Add(blockData.ID, blockPlacement);
+            blockPlacement.Position = new Point(blockData.PositionX, blockData.PositionY);
         }
 
-        private static void LoadDotConnections(List<SaveDotData> dotData, ref Block block)
+        private static void LoadDotConnections(List<SaveDotData> dotData, ref BlockPlacement blockPlacement)
         {
             for (int i = 0; i < dotData.Count; i++)
             {
-                LoadDotConnection(dotData[i], ref block);
+                LoadDotConnection(dotData[i], ref blockPlacement);
             }
         }
 
-        private static void LoadDotConnection(SaveDotData dotData, ref Block block)
+        private static void LoadDotConnection(SaveDotData dotData, ref BlockPlacement blockPlacement)
         {
             try
             {
-                if (dotData.ConnectedToParentID == -1 || dotData.ConnectedToID == -1) return; //No connection
-                if (!blocks.ContainsKey(dotData.ConnectedToParentID)) return; //Is not the second block
+                if (dotData.ConnectedToParentID == 0 || dotData.ConnectedToID == 0) return; //No connection
+                if (!blockPlacements.ContainsKey(dotData.ConnectedToParentID)) return; //Is not the second block
 
-                Connection connection = new Connection(block.FindDot(dotData.ID), blocks[dotData.ConnectedToParentID].FindDot(dotData.ConnectedToID));
+                Connection connection = new Connection(
+                    blockPlacement.FindDot(dotData.ID), 
+                    blockPlacements[dotData.ConnectedToParentID].FindDot(dotData.ConnectedToID));
             } 
             catch { }
         }
 
-        private static void LoadContentsData(List<SaveContentData> contentData, ref Block block)
+        private static void LoadContentsData(List<SaveContentData> contentData, ref BlockPlacement blockPlacement)
         {
             for (int i = 0; i < contentData.Count; i++)
             {
-                LoadContentsData(contentData[i], ref block);
+                LoadContentsData(contentData[i], ref blockPlacement);
             }
         }
-        private static void LoadContentsData(SaveContentData contentData, ref Block block)
+        private static void LoadContentsData(SaveContentData contentData, ref BlockPlacement blockPlacement)
         {
-            IContents content = block.FindContent(contentData.ID);
             try 
             { 
-                content.Text = contentData.Text;
+                ContentPlacement contentPlacement = blockPlacement.FindContent(contentData.ID);
+                contentPlacement.Value = contentData.Value;
             }
             catch { }
         }

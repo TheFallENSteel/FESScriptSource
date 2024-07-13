@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Diagnostics;
 
-namespace FESScript2.CodeWorks.Transpiler
+namespace FESScript.CodeWorks.Transpiler
 {
     public static class Compiler
     {
@@ -36,8 +36,8 @@ namespace FESScript2.CodeWorks.Transpiler
         const string libraryPath = @"AppFiles\Blocks\Precompiled";
         public static bool CompileProject(string fileName, string directoryPath)
         {
-            Process ConsoleCpp = new Process();
-            ConsoleCpp.StartInfo = new ProcessStartInfo("CMD.EXE", null);
+            /*Process ConsoleCpp = new Process();
+            ConsoleCpp.StartInfo = new ProcessStartInfo("CMD.EXE");
             ConsoleCpp.StartInfo.RedirectStandardInput = true;
             ConsoleCpp.StartInfo.WorkingDirectory = directoryPath + @"\";// + filePath + @"\" + Directories.SaveName;
             ConsoleCpp.StartInfo.CreateNoWindow = true;
@@ -49,7 +49,7 @@ namespace FESScript2.CodeWorks.Transpiler
             writer.WriteLine(@$"del ""{filePath + @"\" + Directories.SaveName + @"\" + GenerateFullCpp.fileName}.exe""");
             writer.WriteLine(@$"g++ {filePath + @"\" + Directories.SaveName + @"\" + Directories.programName}.cpp ""{libraryPath}\{GenerateFullCpp.fileName}.cpp"" -I ""{libraryPath}"" -o {filePath + @"\" + Directories.SaveName + @"\" + GenerateFullCpp.fileName}.exe");
             ConsoleCpp.Close();
-            writer.Close();
+            writer.Close();*/
             return true;
             //ěšžčřčž
         }

@@ -12,7 +12,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FESScript2.Graphics.SupportWindow
+namespace FESScript.Graphics.SupportWindow
 {
     public class Expander : UserControl
     {
@@ -32,20 +32,20 @@ namespace FESScript2.Graphics.SupportWindow
         {
             Rectangle background = new Rectangle() { Fill = CustomBrushes.LeftBar };
             grid.Children.Add(background);
-            Label labelText = new Label() { FontFamily = new FontFamily("Arial"), Content = "Blocks", HorizontalAlignment = HorizontalAlignment.Center };
-            Label labelPlus = new Label() { FontFamily = new FontFamily("Arial"), Content = "+", HorizontalAlignment = HorizontalAlignment.Right};
+            Label labelText = new Label() { FontSize = 20, FontFamily = new FontFamily("Arial"), Content = "Blocks",    HorizontalAlignment = HorizontalAlignment.Center,   VerticalAlignment = VerticalAlignment.Center};
+            Label labelPlus = new Label() { FontSize = 20, FontFamily = new FontFamily("Arial"), Content = "+",         HorizontalAlignment = HorizontalAlignment.Right,    VerticalAlignment = VerticalAlignment.Center };
             grid.Children.Add(labelText);
             grid.Children.Add(labelPlus);
             grid.MouseDown += OnMouseDown;
-            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(25)});
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(40)});
             grid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(150) });          
             this.Content = grid;
             Dispatcher.BeginInvoke(new Action(() =>
             {
-                MainWindow.mainWindow.SizeChanged += OnWindowResize;
-                canvasHeight = MainWindow.mainWindow.mainCanvas.ActualHeight;
-                blockViewer.scrollViewer.Height = MainWindow.mainWindow.mainCanvas.ActualHeight;
+                App.Window.SizeChanged += OnWindowResize;
+                canvasHeight = App.Window.mainCanvas.ActualHeight;
+                blockViewer.scrollViewer.Height = App.Window.mainCanvas.ActualHeight;
                 blockViewer.scrollViewer.Width = double.NaN;
                 blockViewer.scrollViewer.VerticalAlignment = VerticalAlignment.Top;
             }), System.Windows.Threading.DispatcherPriority.Loaded);
@@ -73,7 +73,7 @@ namespace FESScript2.Graphics.SupportWindow
             innerGrid.Children.Add(expanderWindow);
             expanderWindow.VerticalAlignment = VerticalAlignment.Top;
 
-            blockViewer = new BlockViewer(canvasHeight, null, this);
+            blockViewer = new BlockViewer(null, this);
             Grid.SetColumn(blockViewer, 1);
             innerGrid.Children.Add(blockViewer);
             blockViewer.VerticalAlignment = VerticalAlignment.Top;
@@ -85,7 +85,7 @@ namespace FESScript2.Graphics.SupportWindow
         }
         protected void Open(ref bool opened) 
         {
-            canvasHeight = MainWindow.mainWindow.mainCanvas.ActualHeight;
+            canvasHeight = App.Window.mainCanvas.ActualHeight;
             storyboardFirstPanel.Stop();
             if (opened)
             {
@@ -119,7 +119,7 @@ namespace FESScript2.Graphics.SupportWindow
             if (isOpened)
             {
                 isOpened = !isOpened;
-                blockViewer.scrollViewer.Height = MainWindow.mainWindow.mainCanvas.ActualHeight;
+                blockViewer.scrollViewer.Height = App.Window.mainCanvas.ActualHeight;
                 Open(ref isOpened);
             }
         }

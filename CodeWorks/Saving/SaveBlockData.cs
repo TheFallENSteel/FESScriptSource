@@ -4,78 +4,114 @@ using System.Windows;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FESScript2.Graphics.UserControls;
-using FESScript2.Graphics.UserControls.SubUserControls;
+using FESScript.Graphics.UserControls.SubUserControls;
+using System.Xml.Serialization;
+using FESScript.CodeWorks.BlockCreation.Blocks.Placements;
+using FESScript.CodeWorks.Functions;
+using FESScript.CodeWorks.BlockCreation.Interfaces;
+using FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args;
+using System.Windows.Media.Animation;
 
-namespace FESScript2.CodeWorks.Saving
+namespace FESScript.CodeWorks.Saving
 {
     public struct SaveProjectData
     {
+        [XmlAttribute]
         public double Version { get; set; }
+        [XmlAttribute]
         public double Zoom { get; set; }
+        [XmlAttribute]
         public double CameraX { get; set; }
+        [XmlAttribute]
         public double CameraY { get; set; }
+        [XmlAttribute]
+        public int LargestUniqueID 
+        {
+            get => IFindable.LargestID;
+            set => IFindable.LargestID = value;
+        }
+        [XmlElement]
+        public List<int> FreeIDs
+        {
+            get => IFindable.freeID.ToList();
+            set => IFindable.freeID = new Queue<int>(value);
+        }
+
         public List<SaveBlockData> Blocks { get; set; }
-        public SaveProjectData(double zoom, Point cameraPosition, List<Block> blocks, double version) 
+        public SaveProjectData(double zoom, Point cameraPosition, List<BlockPlacement> blockPlacements, double version) 
         { 
             Version = version;
             Zoom = zoom;
             CameraX = cameraPosition.X;
             CameraY = cameraPosition.Y;
-            Blocks = blocks.Select(block => new SaveBlockData(block)).ToList();
+            Blocks = blockPlacements.Select(blockPlacement => new SaveBlockData(blockPlacement)).ToList();
         }
     }    
     public struct SaveBlockData
     {
+        [XmlAttribute]
         public int ID { get; set; }
-        public int BlockTypeID { get; set; }
+        [XmlAttribute]
+        public int BlockTemplateID { get; set; }
+        [XmlAttribute]
         public double PositionX { get; set; }
+        [XmlAttribute]
         public double PositionY { get; set; }
         public List<SaveDotData> DotData { get; set; }
         public List<SaveContentData> ContentData { get; set; }
-        public SaveBlockData(Block block) 
+        public SaveBlockData(BlockPlacement blockPlacement) 
         {
-            BlockTypeID = block.blockType.ID;
-            ID = block.ID;
-            PositionX = block.Position.X;
-            PositionY = block.Position.Y;
-            DotData = block.dots.Select(s => new SaveDotData(s)).ToList();
-            ContentData = block.contentsInteractive.Select(s => new SaveContentData(s)).ToList();
+            BlockTemplateID = blockPlacement.BlockTemplate.ID;
+            ID = blockPlacement.ID;
+            PositionX = blockPlacement.Position.X;
+            PositionY = blockPlacement.Position.Y;
+            DotData = blockPlacement.DotPlacements.Select(s => new SaveDotData(s)).ToList();
+            ContentData = blockPlacement.ContentPlacements.Select(s => new SaveContentData(s)).ToList();
         }
     }
     public struct SaveDotData
     {
+        [XmlAttribute]
         public int ID { get; set; }
+        [XmlAttribute]
         public int ParentID { get; set; }
 
+        [XmlAttribute]
         public int ConnectedToID { get; set; }
+        [XmlAttribute]
         public int ConnectedToParentID { get; set; }
 
-        public SaveDotData(Dots dot) 
+        public SaveDotData(DotPlacement dotPlacement) 
         {
-            ID = dot.ID;
+            ID = dotPlacement.DotTemplate.ID;
 
-            ParentID = dot.BlockParent.ID;
-            if (dot.ConnectedTo != null) 
+            ParentID = dotPlacement.DotTemplate.Parent.ID;
+            if (dotPlacement.ConnectedTo != null) 
             { 
-                ConnectedToID = dot.ConnectedTo.ID;
-                ConnectedToParentID = dot.ConnectedTo.BlockParent.ID;
+                ConnectedToID = dotPlacement.ConnectedTo.ID;
+                ConnectedToParentID = dotPlacement.ConnectedTo.Parent.ID;
             }
             else 
             {
-                ConnectedToID = -1;
-                ConnectedToParentID = -1;
+                ConnectedToID = 0;
+                ConnectedToParentID = 0;
             }
         }
     }
     public struct SaveContentData
     {
+        [XmlAttribute]
         public int ID { get; set; }
-        public string Text { get; set; }
-        public SaveContentData(IContents content) 
+        [XmlElement("Text", Type = typeof(StringArgs))]
+        [XmlElement("Boolean", Type = typeof(BoolArgs))]
+        [XmlElement("Number", Type = typeof(DoubleArgs))]
+        [XmlElement("Arguments", Type = typeof(ListArgs<string>))]
+        [XmlElement("ComboBoxArgs", Type = typeof(ComboBoxArgs))]
+        public IArgs Value { get; set; }
+        public SaveContentData(ContentPlacement content) 
         { 
             ID = content.ID;
-            Text = content.Text;
+            Value = content.Value;
         }
     }
 }
