@@ -31,7 +31,7 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
             {
                 try
                 {
-                    LoadTempalte(Directory.GetParent(fileName).FullName, Path.GetFileName(fileName));
+                    LoadTemplate(Directory.GetParent(fileName).FullName, Path.GetFileName(fileName));
                 }
                 catch (Exception e)
                 {
@@ -40,7 +40,7 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
             }
         }
 
-        private BlockTemplate LoadTempalte(string path, string fileName)
+        private BlockTemplate LoadTemplate(string path, string fileName)
         {
             XmlReader reader = XmlReader.Create(Path.Combine(path, fileName));
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(BlockTemplate));

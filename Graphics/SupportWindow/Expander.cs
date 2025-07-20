@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FESScript.Graphics;
 
 namespace FESScript.Graphics.SupportWindow
 {
@@ -55,7 +56,7 @@ namespace FESScript.Graphics.SupportWindow
             doubleAnimationFirstPanel = new DoubleAnimation();
             doubleAnimationFirstPanel.AccelerationRatio = 0.5;
             storyboardFirstPanel = new Storyboard();
-            Storyboard.SetTargetProperty(doubleAnimationFirstPanel, new PropertyPath(ExpanderWindow.HeightProperty));
+            Storyboard.SetTargetProperty(doubleAnimationFirstPanel, new PropertyPath(HeightProperty));
             storyboardFirstPanel.RepeatBehavior = new RepeatBehavior(1);
             storyboardFirstPanel.Children.Add(doubleAnimationFirstPanel);
 
@@ -95,13 +96,13 @@ namespace FESScript.Graphics.SupportWindow
                 }
                 blockViewer.isShown = false;
                 doubleAnimationFirstPanel.To = 0;
-                doubleAnimationFirstPanel.Duration = new Duration(TimeSpan.FromSeconds(((animationAntiSpeed / canvasHeight) * expanderWindow.ActualHeight)));
+                doubleAnimationFirstPanel.Duration = new Duration(TimeSpan.FromSeconds(animationAntiSpeed / canvasHeight * expanderWindow.ActualHeight));
             }
             else 
             {
                 doubleAnimationFirstPanel.To = canvasHeight;
                 expanderWindow.Height = canvasHeight;
-                doubleAnimationFirstPanel.Duration = new Duration(TimeSpan.FromSeconds((animationAntiSpeed / canvasHeight) * MathF.Abs((float)(canvasHeight - expanderWindow.ActualHeight))));
+                doubleAnimationFirstPanel.Duration = new Duration(TimeSpan.FromSeconds(animationAntiSpeed / canvasHeight * MathF.Abs((float)(canvasHeight - expanderWindow.ActualHeight))));
                 //canvas.Children.Add(expanderWindow);
             }
                 doubleAnimationFirstPanel.From = expanderWindow.ActualHeight;

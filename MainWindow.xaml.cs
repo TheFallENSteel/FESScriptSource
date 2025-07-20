@@ -48,6 +48,11 @@ namespace FESScript
             get => codeExecutionManager;
         }
         public void ExecuteCode() => codeExecutionManager.Run();
+        public void InitializeCompilation() 
+        {
+            CodeExecutionManager.CompilationController.SetCompiler(Settings.Compiler);
+            CodeExecutionManager.TranspilationController.SetTranspiler(Settings.Transpiler);
+        }
         public async Task CompileCode() => await codeExecutionManager.CompileCode(Start);
         public BlockPlacement start;
         public BlockPlacement Start
@@ -147,7 +152,6 @@ namespace FESScript
             blockTemplate.AddContent(new ContentTemplate(blockTemplate, typeof(TextLabel), 7, value: new StringArgs("Ahojky")));
             blockTemplate.AddContent(new ContentTemplate(blockTemplate, typeof(Combobox), 8, value: new ComboBoxArgs(["Hi", "Hey", "Hate you!", "I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you!"], -1)));
             blockTemplate.Type = Type.Action;
-
             BlockPlacement x = new BlockPlacement(
                 blockTemplate,
                 null, 
@@ -284,7 +288,7 @@ namespace FESScript
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
+            InitializeCompilation();
         }
     }
 }

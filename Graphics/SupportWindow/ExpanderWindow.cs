@@ -11,6 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FESScript.Graphics;
 
 namespace FESScript.Graphics.SupportWindow
 {
@@ -21,7 +22,7 @@ namespace FESScript.Graphics.SupportWindow
         public ExpanderWindow(double height) 
         {
             ItemsControl itemsControl = new ItemsControl();
-            itemsControl.ItemsSource = CodeWorks.BlockCreation.Category.categories;
+            itemsControl.ItemsSource = BlockCreation.Category.categories;
             itemsControl.ItemTemplate = (DataTemplate)Application.Current.Resources["CategoryNameShower"];
             stackPanel = new StackPanel();
             itemsControl.IsTabStop = false;

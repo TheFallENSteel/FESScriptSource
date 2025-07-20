@@ -1,24 +1,12 @@
-﻿using FESScript.CodeWorks.BlockCreation.Blocks.Templates;
-using FESScript.CodeWorks.BlockCreation.Interfaces;
-using FESScript.Graphics.Windows.Constructors;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Window = FESScript.Graphics.Windows.Constructors.Window;
+using FESScript.CodeWorks.BlockCreation.Blocks.Templates;
+using FESScript.Graphics.Windows.Constructors;
 
 namespace FESScript.Graphics.Windows.Displays
 {
@@ -107,6 +95,73 @@ namespace FESScript.Graphics.Windows.Displays
                 contentWindow = new WindowPlacement(null, App.Window.MainCanvas, new Point(), new ContentDisplay(contentTemplate));
                 ContentTemplatesDisplayed.Add(contentTemplate, contentWindow);
                 contentWindow.Window.WindowClosed += (_, _) => ContentTemplatesDisplayed.Remove(contentTemplate);
+            }
+        }
+        private List<FileSystemWatcher> _watcher = new List<FileSystemWatcher>(8);
+        private void EditCode(object sender, RoutedEventArgs e)
+        {
+            try 
+            { 
+                string code = BlockTemplate.InBlockCode;
+                string fileName = $"{BlockTemplate.Name.Replace(' ', '_')}.cs";
+                using (StreamWriter writer = new StreamWriter(fileName, new FileStreamOptions() { Mode = FileMode.OpenOrCreate, Access = FileAccess.Write, Share = FileShare.ReadWrite }))
+                {
+                    writer.Write(code);
+                }
+                Process process = Process.Start(new ProcessStartInfo
+                {
+                    FileName = fileName,
+                    UseShellExecute = true,
+                    Verb = "edit",
+                });
+                process.EnableRaisingEvents = true;
+                FileSystemWatcher watcher = new FileSystemWatcher()
+                {
+                    Filter = fileName,
+                    NotifyFilter = NotifyFilters.LastWrite,
+                };
+                watcher.Path = Path.GetDirectoryName(Path.GetFullPath(fileName));
+                watcher.EnableRaisingEvents = true;
+                process.Exited += (s, e) =>
+                {
+                    watcher.EnableRaisingEvents = false;
+                    _watcher.Remove(watcher);
+                    watcher.Dispose();
+                    Debug.WriteLine($"File {fileName} closed, updating block code.");
+                    SaveCode(s, new FileSystemEventArgs(WatcherChangeTypes.Changed, watcher.Path, watcher.Filter), fileName);
+                };
+                _watcher.Add(watcher);
+                watcher.Changed += (s, e) =>
+                {
+                    SaveCode(s, e, fileName);
+                };
+            }
+            catch (Exception ex) 
+            {
+                Debug.WriteLine($"Cannot open code editor: {ex.Message}");
+                MessageBox.Show($"Cannot open code editor: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void SaveCode(object s, FileSystemEventArgs e, string fileName) 
+        {
+            try
+            {
+                if (e.Name == fileName)
+                {
+                    using (StreamReader reader = new StreamReader(e.Name, new FileStreamOptions() { Share = FileShare.ReadWrite, Access = FileAccess.Read, Mode = FileMode.Open }))
+                    {
+                        string code = reader.ReadToEnd();
+                        Dispatcher.Invoke(() =>
+                        {
+                            BlockTemplate.InBlockCode = code;
+                        });
+                    }
+                }
+                Debug.WriteLine($"File {e.FullPath} saved, updating block code.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Cannot save file: {e.FullPath}: {ex.Message}");
             }
         }
     }

@@ -24,8 +24,38 @@ namespace FESScript
         private ICompiler _compiler;
         private ITranspiler _transpiler;
 
-        public ICompiler Compiler { get => _compiler ?? ICompiler.DefaultCompiler; set => _compiler = value; }
-        public ITranspiler Transpiler { get => _transpiler ?? ITranspiler.DefaultTranspiler; set => _transpiler = value; }
+        public ICompiler Compiler
+        {
+            get
+            {
+                if (_compiler == null)
+                {
+                    _compiler = ICompiler.DefaultCompiler;
+                }
+                return _compiler;
+            }
+
+            set
+            {
+                _compiler = value;
+            }
+        }
+        public ITranspiler Transpiler
+        {
+            get
+            {
+                if (_transpiler == null)
+                {
+                    _transpiler = ITranspiler.DefaultTranspiler;
+                }
+                return _transpiler;
+            }
+
+            set
+            {
+                _transpiler = value;
+            }
+        }
 
     }
 }

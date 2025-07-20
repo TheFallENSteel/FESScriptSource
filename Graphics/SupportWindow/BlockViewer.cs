@@ -11,13 +11,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FESScript.Graphics;
 
 namespace FESScript.Graphics.SupportWindow
 {
     public class BlockViewer : UserControl
     {
         const double animationAntiSpeed = 0.5;
-        CodeWorks.BlockCreation.Category category;
+        BlockCreation.Category category;
         Grid grid = new Grid();
         private ItemsControl itemsControl;
         DoubleAnimation doubleAnimationSecondPanel;
@@ -26,7 +27,7 @@ namespace FESScript.Graphics.SupportWindow
         Expander expander;
         public bool isShown;
 
-        public CodeWorks.BlockCreation.Category currentCategory 
+        public BlockCreation.Category currentCategory 
         {
             get 
             {
@@ -38,7 +39,7 @@ namespace FESScript.Graphics.SupportWindow
             }
         }
 
-        public BlockViewer(CodeWorks.BlockCreation.Category category, Expander expander)
+        public BlockViewer(BlockCreation.Category category, Expander expander)
         {
             this.expander = expander;
             Width = 0;
@@ -72,7 +73,7 @@ namespace FESScript.Graphics.SupportWindow
             doubleAnimationSecondPanel = new DoubleAnimation();
             doubleAnimationSecondPanel.AccelerationRatio = 0.5;
             storyboardSecondPanel = new Storyboard();
-            Storyboard.SetTargetProperty(doubleAnimationSecondPanel, new PropertyPath(BlockViewer.WidthProperty));
+            Storyboard.SetTargetProperty(doubleAnimationSecondPanel, new PropertyPath(WidthProperty));
             storyboardSecondPanel.RepeatBehavior = new RepeatBehavior(1);
             storyboardSecondPanel.Children.Add(doubleAnimationSecondPanel);
             itemsControl.HorizontalAlignment = HorizontalAlignment.Center;
@@ -118,12 +119,12 @@ namespace FESScript.Graphics.SupportWindow
             itemsControl.UpdateLayout();
             doubleAnimationSecondPanel.From = this.ActualWidth;
             doubleAnimationSecondPanel.To = itemsControl.ActualWidth;
-            doubleAnimationSecondPanel.Duration = new Duration(TimeSpan.FromSeconds((animationAntiSpeed / itemsControl.ActualWidth) * MathF.Abs((float)(itemsControl.ActualWidth - this.ActualWidth))));
+            doubleAnimationSecondPanel.Duration = new Duration(TimeSpan.FromSeconds(animationAntiSpeed / itemsControl.ActualWidth * MathF.Abs((float)(itemsControl.ActualWidth - this.ActualWidth))));
             //canvas.Children.Add(expanderWindow);
             storyboardSecondPanel.Begin(this);
         }
 
-        private void OnCategoryChange(CodeWorks.BlockCreation.Category category) 
+        private void OnCategoryChange(BlockCreation.Category category) 
         {
             currentCategory = category;
             ShowCategory();

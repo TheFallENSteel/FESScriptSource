@@ -17,7 +17,6 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
         private string name;
         private string description;
         private Type type;
-        private string inFunctionBodyCode;
         private string inLineBodyCode;
 
         public int ID 
@@ -62,16 +61,6 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public string InFunctionBodyCode
-        {
-            get => inFunctionBodyCode; 
-            set
-            {
-                inFunctionBodyCode = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InFunctionBodyCode)));
-            }
-        }
         public string InBlockCode
         {
             get => inLineBodyCode; 
@@ -109,11 +98,10 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
             content.Parent = null;
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Contents)));
         }
-        public BlockTemplate(ObservableCollection<DotTemplate> dots, ObservableCollection<ContentTemplate> contents, Type type, string name = "", string inFunctionBodyCode = null, string inLineBodyCode = null, string description = "")
+        public BlockTemplate(ObservableCollection<DotTemplate> dots, ObservableCollection<ContentTemplate> contents, Type type, string name = "", string inLineBodyCode = null, string description = "")
         {
             this.Dots = dots;
             this.Contents = contents;
-            this.InFunctionBodyCode = inFunctionBodyCode;
             this.InBlockCode = inLineBodyCode;
             this.Name = name;
             this.Type = type;
@@ -135,7 +123,6 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
                 new ObservableCollection<ContentTemplate>(), 
                 Type.Error, 
                 "New Template", 
-                "", 
                 "", 
                 "Empty description");
 
