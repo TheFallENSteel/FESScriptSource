@@ -49,22 +49,7 @@ namespace FESScript.Graphics.Windows.Displays
 
         private void IOChanged(object sender, SelectionChangedEventArgs e)
         {
-            (DotTemplate.Parent as BlockTemplate)?.Update();
+            (DotTemplate.Parent as BlockTemplate)?.Update(this, new PropertyChangedEventArgs(nameof(DotTemplate)));
         }
     }
 }
-
-/*
-    [XmlAttribute] public int ID { get; set; } = iD;
-
-    [XmlAttribute] public string Name { get; set; } = name;
-    public string Description { get; set; } = description;
-
-    [XmlAttribute] public Type Type { get; set; } = type;
-    [XmlAttribute] public IO IO { get; set; } = iO;
-
-    public string DotCopyCode { get; set; } = dotCopyCode;
-
-    public DotTemplate() : this(Type.Error, IO.Error, -1) { }
-    public IFindable FindChild(int ID) => null;
- */

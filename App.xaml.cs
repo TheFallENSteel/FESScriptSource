@@ -17,10 +17,7 @@ namespace FESScript
         {
             get 
             { 
-                lock (Current.MainWindow) 
-                { 
-                    return (MainWindow)Current.MainWindow;
-                }
+                return (MainWindow)Current.MainWindow;
             }
         }
         public delegate void CategoryEventHandler(CodeWorks.BlockCreation.Category category);

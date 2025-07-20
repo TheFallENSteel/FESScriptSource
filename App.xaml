@@ -4,9 +4,10 @@
              xmlns:local="clr-namespace:FESScript"
              xmlns:blockCreation="clr-namespace:FESScript.CodeWorks.BlockCreation"
              xmlns:blocks="clr-namespace:FESScript.CodeWorks.BlockCreation.Blocks"
-             xmlns:tools="clr-namespace:FESScript.Settings.Tools"
+             xmlns:tools="clr-namespace:FESScript.Tools"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:FES="clr-namespace:FESScript"
+             xmlns:CodeExec="clr-namespace:FESScript.CodeWorks.CodeExecution"
              StartupUri="MainWindow.xaml"
              ShutdownMode="OnMainWindowClose"
              >
@@ -60,6 +61,16 @@
         <ObjectDataProvider x:Key="IOEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="FES:IO"></x:Type>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="CompilersEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="CodeExec:CompilerEnum"></x:Type>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="TranpilersEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="CodeExec:TranspilerEnum"></x:Type>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </Application.Resources>

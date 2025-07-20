@@ -7,7 +7,6 @@ using System.IO;
 using System.Threading;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using FESScript.Settings;
 
 namespace FESScript.CodeWorks.Console
 {
@@ -58,7 +57,7 @@ namespace FESScript.CodeWorks.Console
 
         private void StartConsole()
         {
-            isOpened = true;
+            /*isOpened = true;
             ConsoleCpp = new Process();
             Application.Current.Exit += (sender, args) => { writer.WriteLine("taskkill OutputFile.exe"); ConsoleCpp.Kill(); ConsoleCpp.Close(); };
             ConsoleCpp.StartInfo = new ProcessStartInfo("CMD.EXE");

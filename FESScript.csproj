@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows7.0</TargetFramework>
+    <TargetFramework>net9.0-windows7.0</TargetFramework>
     <UseWPF>true</UseWPF>
     <PackageId>FESScript</PackageId>
     <Authors>Martin Komárek</Authors>
@@ -31,107 +31,27 @@
 
   <ItemGroup>
     <Compile Remove="bin\**" />
-    <Compile Remove="Graphics\UserControls\SubUserControls\**" />
+    <Compile Remove="FESScriptFiles\**" />
     <EmbeddedResource Remove="bin\**" />
-    <EmbeddedResource Remove="Graphics\UserControls\SubUserControls\**" />
+    <EmbeddedResource Remove="FESScriptFiles\**" />
     <None Remove="bin\**" />
-    <None Remove="Graphics\UserControls\SubUserControls\**" />
+    <None Remove="FESScriptFiles\**" />
     <Page Remove="bin\**" />
-    <Page Remove="Graphics\UserControls\SubUserControls\**" />
+    <Page Remove="FESScriptFiles\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="CodeWorks\BlockCreation\BlockRecreation.cs" />
     <Compile Remove="CodeWorks\BlockCreation\Pre3Loader.cs" />
-    <Compile Remove="Graphics\UserControls\Connecting\Connector.cs" />
     <Compile Remove="Graphics\UserControls\OldBlock.cs" />
     <Compile Remove="Graphics\UserControls\OldBlockType.cs" />
     <Compile Remove="Graphics\UserControls\UserControlPlus.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="Graphics\UserControls\SubUserControls\ConnectorPoint.cs" />
-    <Compile Include="Graphics\UserControls\SubUserControls\Menu.xaml.cs" />
-  </ItemGroup>
-
-
-
-  <ItemGroup>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Basics\Start.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Basics\WhileLoop.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Booleans\CreateBooleanVariable.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Booleans\IfElse.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Booleans\SetValueOfBooleanVariable.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Booleans\TrueFalse.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Booleans\UseBooleanVariable.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Console\ConsoleReadLine.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Console\ConsoleWriteLine.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\ConvertToNumber.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\CreateNumericalVariable.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\EqualNum.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\IsPrime.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\IsPrimeUnOptimized.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\NumericalOperations.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\SetValue.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\UseNumericalVariable.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Numerical\UseValue.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\ConvertToString.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\CreateTextualVariable.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\SetValueOfTextualVariable.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\TextAdd.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\UseText.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="FESScriptFiles\AppFiles\Blocks\Design\Textual\UseTextualVariable.FESBlock">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
+    <Compile Update="Graphics\Windows\Displays\SettingsDisplay.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Graphics\Windows\Displays\ContentDisplay.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -168,14 +88,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="FESScriptFiles\AppFiles\Blocks\Precompiled\" />
-    <Folder Include="FESScriptFiles\AppFiles\Projects\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Page Include="Graphics\UserControls\SubUserControls\Menu.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.14.0" />
   </ItemGroup>
 
 </Project>

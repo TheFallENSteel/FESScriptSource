@@ -4,33 +4,28 @@ using System.Text;
 using System.IO;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using System.Xml.Serialization;
 using System.Runtime.Serialization;
 using System.Windows;
 using FESScript.CodeWorks.BlockCreation.Blocks.Placements;
-using FESScript.Settings;
 
 namespace FESScript.CodeWorks.Saving
 {
     public static class Saver
     {
-        public static void SaveProject(List<BlockPlacement> blockPlacements, string fileName, MainWindow mainWindow)
+        public static void SaveProject(List<BlockPlacement> blockPlacements, string path, MainWindow mainWindow)
         {
             try 
             { 
                 SaveProjectData projectData = new SaveProjectData(mainWindow.Zoom, App.Window.CameraPosition, blockPlacements, MainWindow.Version);
 
-                string path = Directories.Projects + @$"\{fileName}";
-                Directory.CreateDirectory(path);
-                using (Stream stream = File.Open(path + @"\Save.FESSave", FileMode.Create)) 
+                using (Stream stream = File.Open(path, FileMode.Create)) 
                 { 
-                    XmlSerializer serializer = new XmlSerializer(typeof(SaveProjectData));
-                    serializer.Serialize(stream, projectData);
+                    JsonSerializer.Serialize<SaveProjectData>(stream, projectData, new JsonSerializerOptions(JsonSerializerDefaults.General) { WriteIndented = true });
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Cannot save file: {ex.Message}", "Error", MessageBoxButton.OK);
+                MessageBox.Show($"Cannot save file: {ex.Message}, {ex.ToString()}", "Error", MessageBoxButton.OK);
             }
         }
     }

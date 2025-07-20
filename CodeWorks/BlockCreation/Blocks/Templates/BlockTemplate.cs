@@ -1,19 +1,18 @@
-﻿using FESScript.CodeWorks.BlockCreation.Blocks.Placements;
-using FESScript.CodeWorks.BlockCreation.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Xml;
-using System.Xml.Serialization;
+using System.Text.Json.Serialization;
+using FESScript.CodeWorks.BlockCreation.Blocks.Placements;
+using FESScript.CodeWorks.BlockCreation.Interfaces;
 
 namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
 {
     public class BlockTemplate : IFindable, IInfo, IRemovable, INotifyPropertyChanged
     {
-        [XmlIgnore] private static Dictionary<int, BlockTemplate> BlockTemplates = new Dictionary<int, BlockTemplate>();
+        [JsonIgnore] private static Dictionary<int, BlockTemplate> BlockTemplates = new Dictionary<int, BlockTemplate>();
         private int iD;
         private string name;
         private string description;
@@ -21,7 +20,7 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
         private string inFunctionBodyCode;
         private string inLineBodyCode;
 
-        [XmlAttribute] public int ID 
+        public int ID 
         { 
             get { return iD; }
             set 
@@ -31,9 +30,9 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
             }
         }
 
-        [XmlIgnore] public IFindable Parent { get; }
+        [JsonIgnore] public IFindable Parent { get; }
 
-        [XmlAttribute] public string Name
+        public string Name
         {
             get => name; 
             set
@@ -52,7 +51,7 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
             }
         }
 
-        [XmlAttribute] public Type Type
+        public Type Type
         {
             get => type; 
             set
@@ -73,25 +72,49 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InFunctionBodyCode)));
             }
         }
-        public string InLineBodyCode
+        public string InBlockCode
         {
             get => inLineBodyCode; 
             set
             {
                 inLineBodyCode = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InLineBodyCode)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(InBlockCode)));
             }
         }
 
         public ObservableCollection<DotTemplate> Dots { get; init; }
         public ObservableCollection<ContentTemplate> Contents { get; init; }
 
+        public void AddDot(DotTemplate dot)
+        {
+            Dots.Add(dot);
+            dot.Parent = this;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Dots)));
+        }
+        public void AddContent(ContentTemplate content)
+        {
+            Contents.Add(content);
+            content.Parent = this;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Contents)));
+        }
+        public void RemoveDot(DotTemplate dot)
+        {
+            Dots.Remove(dot);
+            dot.Parent = null;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Dots)));
+        }
+        public void RemoveContent(ContentTemplate content)
+        {
+            Contents.Remove(content);
+            content.Parent = null;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Contents)));
+        }
         public BlockTemplate(ObservableCollection<DotTemplate> dots, ObservableCollection<ContentTemplate> contents, Type type, string name = "", string inFunctionBodyCode = null, string inLineBodyCode = null, string description = "")
         {
             this.Dots = dots;
             this.Contents = contents;
             this.InFunctionBodyCode = inFunctionBodyCode;
-            this.InLineBodyCode = inLineBodyCode;
+            this.InBlockCode = inLineBodyCode;
             this.Name = name;
             this.Type = type;
             this.Description = description;
@@ -106,6 +129,15 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
             (this as IFindable).Register();
             BlockTemplates.Add(ID, this);
         }
+        public static BlockTemplate CreateEmptyTemplate() => 
+            new BlockTemplate(
+                new ObservableCollection<DotTemplate>(), 
+                new ObservableCollection<ContentTemplate>(), 
+                Type.Error, 
+                "New Template", 
+                "", 
+                "", 
+                "Empty description");
 
         public IFindable FindChild(int ID)
         {
@@ -126,9 +158,9 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
             return Dots.First((element) => element.ID == ID);
         }
 
-        public void Update() 
+        public void Update(object sender, PropertyChangedEventArgs args) 
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
+            PropertyChanged?.Invoke(sender, args);
         }
 
         public void Remove()

@@ -1,0 +1,56 @@
+﻿<dataDisplays:DataDisplay x:Class="FESScript.Graphics.Windows.Displays.SettingsDisplay"
+             xmlns:dataDisplays="clr-namespace:FESScript.Graphics.Windows.Constructors"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:templates="clr-namespace:FESScript.CodeWorks.BlockCreation.Blocks.Templates" 
+             xmlns:local="clr-namespace:FESScript.Graphics.Windows.Displays"
+             xmlns:FES="clr-namespace:FESScript"
+             xmlns:Comp="clr-namespace:FESScript.CodeWorks.CodeExecution.Compilation"
+             xmlns:Transp="clr-namespace:FESScript.CodeWorks.CodeExecution.Transpilation"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             d:DataContext="{d:DesignInstance Type=FES:Settings}"
+             mc:Ignorable="d" 
+             d:DesignHeight="360" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition MinHeight="40"/>
+            <RowDefinition MinHeight="40"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Grid.Column="0" Grid.Row="0" VerticalAlignment="Center">Transpiler</Label>
+        <Label Grid.Column="0" Grid.Row="1" VerticalAlignment="Center">Compiler</Label>
+        <ComboBox Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" MinHeight="30" Margin="2.5" ItemsSource="{x:Static Transp:ITranspiler.Transpilers}" SelectedItem="{Binding Transpiler, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" Margin="5"/>
+                        <TextBlock Text="{Binding Version}" Margin="5" Foreground="Gray"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+        <ComboBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" MinHeight="30" Margin="2.5" ItemsSource="{x:Static Comp:ICompiler.Compilers}" SelectedItem="{Binding Compiler, Mode=TwoWay}">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Name}" Margin="5"/>
+                        <TextBlock Text="{Binding Version}" Margin="5" Foreground="Gray"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+
+    </Grid>   
+</dataDisplays:DataDisplay>
+              
+              
+              
+              
+              

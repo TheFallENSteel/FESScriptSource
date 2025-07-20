@@ -2,7 +2,7 @@
 using FESScript.CodeWorks.BlockCreation.Interfaces;
 using FESScript.CodeWorks.BlockCreation.Blocks.UserElements;
 using System.Windows.Input;
-using FESScript.Graphics.UserControls.Connecting;
+using FESScript.Graphics.UserControls;
 
 namespace FESScript.CodeWorks.BlockCreation.Blocks.Placements
 {
@@ -45,6 +45,7 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Placements
         {
             if (Connection.CurrentConnection != null) Connection.CurrentConnection.FinishConnection(this);
         }
+        public string FullName() => $"{(Parent as BlockPlacement).FullName()}_D{IO.ToString()}{ID.ToString()})";
 
         public IFindable FindChild(int ID)
         {

@@ -3,6 +3,7 @@ using FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args;
 using FESScript.CodeWorks.BlockCreation.Interfaces;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Controls;
 
 namespace FESScript.CodeWorks.BlockCreation.Blocks.Placements
@@ -44,7 +45,8 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Placements
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Value))); 
             }
         }
-
+        public string FullName() => $"{(Parent as BlockPlacement).FullName()}_C{nameof(ContentData.Type).Take(3)}{ID.ToString()})";
+        private ContentPlacement() { }
         public ContentPlacement(ContentTemplate contentData, IFindable parent)
         {
             this.ContentData = contentData;
@@ -52,6 +54,16 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Placements
             this.Parent = parent;
             ContentData.PropertyChanged += ChangeType;
             ChangeType(this, new PropertyChangedEventArgs(nameof(ContentData.Type)));
+        }
+
+        public static ContentPlacement ModifyType(ContentTemplate contentData, IFindable parent)
+        {
+            ContentPlacement returnValue = new ContentPlacement();
+            returnValue.ContentData = contentData;
+            returnValue.Parent = parent;
+            returnValue.ContentData.PropertyChanged += returnValue.ChangeType;
+            returnValue.ChangeType(returnValue, new PropertyChangedEventArgs(nameof(ContentData.Type)));
+            return returnValue;
         }
 
         public void ChangeType(object sender, PropertyChangedEventArgs args) 

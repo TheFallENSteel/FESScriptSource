@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="FESScript.Graphics.UserControls.SubUserControls.Menu"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FESScript.Graphics.UserControls.SubUserControls"
+             xmlns:support="clr-namespace:FESScript.Graphics.SupportWindow"
+             xmlns:UserControls="clr-namespace:FESScript.Graphics.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="40"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="99" Background="LightGray" BorderBrush="Black"></Border>
+        <support:Expander Grid.Column="0" Grid.Row="0" x:Name="expander"/>
+        <Ellipse Width="35" Height="35" Grid.Column="2" x:Name="ellipseStart" Fill="LimeGreen" Style="{StaticResource DotButton1}" MouseLeftButtonDown="StartClick" UseLayoutRounding="True"/>
+        <Ellipse Width="35" Height="35" Grid.Column="3" x:Name="ellipseSave" Fill="SaddleBrown" Style="{StaticResource DotButton1}" MouseLeftButtonDown="SaveClick" UseLayoutRounding="True"/>
+        <Ellipse Width="35" Height="35" Grid.Column="4" x:Name="ellipseLoad" Fill="Blue" Style="{StaticResource DotButton1}" MouseLeftButtonDown="LoadClick" UseLayoutRounding="True"/>
+        <Ellipse Width="35" Height="35" Grid.Column="5" x:Name="ellipseCompile" Fill="Gray" Style="{StaticResource DotButton1}" MouseLeftButtonDown="SettingsClick" UseLayoutRounding="True"/>
+    </Grid>
+</UserControl>
