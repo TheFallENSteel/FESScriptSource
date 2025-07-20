@@ -1,11 +1,12 @@
 ﻿using System.Windows.Controls;
 using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Text.Json.Serialization;
 
 namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args
 {
     public struct ComboBoxArgs : IArgs
     {
+        public bool IsReadOnly { get; set;}
         private string[] values;
         public string[] Values
         {
@@ -17,7 +18,6 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args
             }
         }
         private int selectedIndex;
-        [XmlAttribute]
         public int SelectedIndex
         {
             get => selectedIndex;
@@ -27,14 +27,15 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedIndex"));
             }
         }
-        [XmlIgnore] public int Value 
+        [JsonIgnore] public int Value 
         { 
             get { return SelectedIndex; }
             set { SelectedIndex = value; }
         }
 
-        public ComboBoxArgs(string[] values, int selectedIndex)
+        public ComboBoxArgs(string[] values, int selectedIndex, bool isReadOnly = false)
         {
+            IsReadOnly = isReadOnly;
             Values = values;
             SelectedIndex = selectedIndex;
         }

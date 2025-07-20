@@ -22,6 +22,7 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
 
         public void Load()
         {
+            if (CategoriesDirectory == null) return;
             if (!Directory.Exists(CategoriesDirectory))
             {
                 Directory.CreateDirectory(CategoriesDirectory);

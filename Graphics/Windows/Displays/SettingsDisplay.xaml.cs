@@ -24,11 +24,11 @@ namespace FESScript.Graphics.Windows.Displays
     /// <summary>
     /// Interaction logic for DotDisplay.xaml
     /// </summary>
-    public partial class ContentDisplay : DataDisplay
+    public partial class SettingsDisplay : DataDisplay
     {
-        public ContentTemplate ContentTemplate { get; set; }
+        public Settings ContentTemplate { get; set; }
 
-        public ContentDisplay(ContentTemplate template)
+        public SettingsDisplay(Settings template)
         {
             InitializeComponent();
             this.ContentTemplate = template;
@@ -44,23 +44,8 @@ namespace FESScript.Graphics.Windows.Displays
 
         public override void SetData(object data)
         {
-            Debug.Assert(data is ContentTemplate);
-            ContentTemplate = data as ContentTemplate;
-        }
-
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            (ContentTemplate.Parent as BlockTemplate).Update(ContentTemplate, new PropertyChangedEventArgs(ContentTemplate.ID.ToString()));
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (ContentTemplate.InitialValue is StringArgs stringArgs)
-            {
-                stringArgs.Value = (sender as TextBox)?.Text;
-                ContentTemplate.InitialValue = stringArgs;
-                if (stringArgs.IsReadOnly) (ContentTemplate.Parent as BlockTemplate).Update(ContentTemplate, new PropertyChangedEventArgs(ContentTemplate.ID.ToString()));
-            }
+            Debug.Assert(data is Settings);
+            ContentTemplate = data as Settings;
         }
     }
 }

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Xml.Serialization;
 
 namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args
 {
     internal struct DoubleArgs : IArgs
     {
+        public bool IsReadOnly { get; set; }
         private double dValue;
         public double Value
         {
@@ -22,8 +22,9 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args
             }
         }
 
-        public DoubleArgs(double value)
+        public DoubleArgs(double value, bool isReadOnly = false)
         {
+            IsReadOnly = isReadOnly;
             Value = value;
         }
 

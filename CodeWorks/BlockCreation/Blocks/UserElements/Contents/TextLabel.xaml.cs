@@ -16,8 +16,9 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents
         {
             if (contentPlacement.Value is not StringArgs)
             {
-                contentPlacement.Value = new StringArgs("NotInit");
+                contentPlacement.Value = new StringArgs("", true);
             }
+            contentPlacement.Value.IsReadOnly = true;
             this.ContentPlacement = contentPlacement;
             this.DataContext = ContentPlacement;
             InitializeComponent();

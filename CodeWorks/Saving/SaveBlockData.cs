@@ -5,32 +5,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FESScript.Graphics.UserControls.SubUserControls;
-using System.Xml.Serialization;
 using FESScript.CodeWorks.BlockCreation.Blocks.Placements;
 using FESScript.CodeWorks.Functions;
 using FESScript.CodeWorks.BlockCreation.Interfaces;
 using FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args;
 using System.Windows.Media.Animation;
+using FESScript.CodeWorks.BlockCreation.Blocks.Templates;
 
 namespace FESScript.CodeWorks.Saving
 {
     public struct SaveProjectData
     {
-        [XmlAttribute]
         public double Version { get; set; }
-        [XmlAttribute]
         public double Zoom { get; set; }
-        [XmlAttribute]
         public double CameraX { get; set; }
-        [XmlAttribute]
         public double CameraY { get; set; }
-        [XmlAttribute]
         public int LargestUniqueID 
         {
             get => IFindable.LargestID;
             set => IFindable.LargestID = value;
         }
-        [XmlElement]
         public List<int> FreeIDs
         {
             get => IFindable.freeID.ToList();
@@ -47,15 +41,33 @@ namespace FESScript.CodeWorks.Saving
             Blocks = blockPlacements.Select(blockPlacement => new SaveBlockData(blockPlacement)).ToList();
         }
     }    
+    public struct SaveBlockTemplateData
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public SaveBlockTemplateData(BlockTemplate blockTemplate) 
+        {
+            ID = blockTemplate.ID;
+            Name = blockTemplate.Name;
+            Description = blockTemplate.Description;
+        }
+    }
+    public struct SaveDotTemplateData
+    {
+        public int ID { get; set; }
+        public int ParentID { get; set; }
+        public SaveDotTemplateData(DotTemplate dotTemplate) 
+        {
+            ID = dotTemplate.ID;
+            ParentID = dotTemplate.Parent.ID;
+        }
+    }
     public struct SaveBlockData
     {
-        [XmlAttribute]
         public int ID { get; set; }
-        [XmlAttribute]
         public int BlockTemplateID { get; set; }
-        [XmlAttribute]
         public double PositionX { get; set; }
-        [XmlAttribute]
         public double PositionY { get; set; }
         public List<SaveDotData> DotData { get; set; }
         public List<SaveContentData> ContentData { get; set; }
@@ -71,14 +83,10 @@ namespace FESScript.CodeWorks.Saving
     }
     public struct SaveDotData
     {
-        [XmlAttribute]
         public int ID { get; set; }
-        [XmlAttribute]
         public int ParentID { get; set; }
 
-        [XmlAttribute]
         public int ConnectedToID { get; set; }
-        [XmlAttribute]
         public int ConnectedToParentID { get; set; }
 
         public SaveDotData(DotPlacement dotPlacement) 
@@ -100,13 +108,7 @@ namespace FESScript.CodeWorks.Saving
     }
     public struct SaveContentData
     {
-        [XmlAttribute]
         public int ID { get; set; }
-        [XmlElement("Text", Type = typeof(StringArgs))]
-        [XmlElement("Boolean", Type = typeof(BoolArgs))]
-        [XmlElement("Number", Type = typeof(DoubleArgs))]
-        [XmlElement("Arguments", Type = typeof(ListArgs<string>))]
-        [XmlElement("ComboBoxArgs", Type = typeof(ComboBoxArgs))]
         public IArgs Value { get; set; }
         public SaveContentData(ContentPlacement content) 
         { 

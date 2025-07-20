@@ -2,7 +2,7 @@
 using FESScript.CodeWorks.BlockCreation.Interfaces;
 using FESScript.CodeWorks.BlockCreation.Blocks.UserElements;
 using System.Windows.Input;
-using FESScript.Graphics.UserControls.Connecting;
+using FESScript.Graphics.UserControls;
 
 namespace FESScript.CodeWorks.BlockCreation.Blocks.Placements
 {

@@ -22,7 +22,7 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Commands
         }
         public static void Reset(BlockPlacement parameter)
         {
-            parameter.UpdateTemplate();
+            parameter.UpdateTemplate(parameter, new System.ComponentModel.PropertyChangedEventArgs("all"));
         }
     }
 }

@@ -1,15 +1,16 @@
-﻿using FESScript.CodeWorks.BlockCreation.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Windows.Controls;
-using FESScript.CodeWorks.Functions;
-using System.Windows.Input;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using FESScript.CodeWorks.BlockCreation.Blocks.Templates;
 using FESScript.CodeWorks.BlockCreation.Blocks.UserElements;
-using System.Linq;
-using System.ComponentModel;
-using System.Collections.Specialized;
+using FESScript.CodeWorks.BlockCreation.Interfaces;
+using FESScript.CodeWorks.Functions;
 
 namespace FESScript.CodeWorks.BlockCreation.Blocks.Placements
 {
@@ -42,15 +43,24 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Placements
         {
             BlockTemplate = blockData;
             Parent = parent;
-            UpdateTemplate();
+            CreateTemplate();
             (this as IFindable).Register();
             Block = new Block(this);
             (this as CanvasItem).DrawPosition();
         }
+        public void CreateTemplate(object sender = null, EventArgs args = null)
+        {
+            ContentPlacements = BlockTemplate.Contents.Select(
+                contentTemplate => new ContentPlacement(contentTemplate, this)).ToList();
+            this.UpdateRest(sender);
+        }
+        public void UpdateTemplate(object sender = null, PropertyChangedEventArgs args = null)
+        {
+            CreateTemplate(sender, args);
+        }
 
-        public void UpdateTemplate(object sender = null, EventArgs args = null) 
-        { 
-            ContentPlacements = BlockTemplate.Contents.Select(contentTemplate => new ContentPlacement(contentTemplate, this)).ToList();
+        private void UpdateRest(object sender)
+        {
             DotPlacements = BlockTemplate.Dots.Select(dotTemplate => new DotPlacement(dotTemplate, this)).ToList();
             PropertyChanged?.Invoke(sender, new PropertyChangedEventArgs("SomeProperty"));
             CollectionChanged?.Invoke(sender, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
@@ -72,13 +82,17 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Placements
             {
                 Remove();
             }
+            else if (e.Key == Key.P && IsClicked)
+            {
+                this.Clone();
+            }
         }
 
         public void Remove()
         {
             Hide();
 
-            BlockTemplate.PropertyChanged -= UpdateTemplate;
+            if (BlockTemplate != null) BlockTemplate.PropertyChanged -= UpdateTemplate;
             Block.KeyDown -= OnKeyDown;
             Block.MouseDown -= ((IMoveable)this).MouseDown;
             Block.MouseMove -= ((IMoveable)this).MouseMove;

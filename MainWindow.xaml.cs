@@ -21,12 +21,13 @@ using FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents;
 using Block = FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Block;
 using CheckBox = FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.CheckBox;
 using TextBox = FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.TextBox;
-using FESScript.Graphics.UserControls.Connecting;
-using FESScript.Settings;
 using FESScript.Graphics.Windows.WindowData;
 using FESScript.Graphics.Windows.Displays;
 using FESScript.Graphics.Windows.Constructors;
 using FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args;
+using FESScript.CodeWorks.CodeExecution;
+using FESScript.Graphics.UserControls;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace FESScript
 {
@@ -40,10 +41,26 @@ namespace FESScript
 
         public event EventHandler CameraMoveEvent;
         public event PropertyChangedEventHandler PropertyChanged;
+        public Settings Settings { get; set; } = new Settings();
+        CodeExecutionManager codeExecutionManager = new CodeExecutionManager();
+        public CodeExecutionManager CodeExecutionManager
+        {
+            get => codeExecutionManager;
+        }
+        public void ExecuteCode() => codeExecutionManager.Run();
+        public async Task CompileCode() => await codeExecutionManager.CompileCode(Start);
+        public BlockPlacement start;
+        public BlockPlacement Start
+        { 
+            get => start;
+            set  
+            {
+                if (value != start && start == null) start.Remove();
+                if (value != null) start = value;
+            }
+        }
 
-        public Block Start { get; set; }
-
-        public Point CameraPosition {  get; set; }
+        public Point CameraPosition { get; set; }
 
         private string saveName;
         public string SaveName
@@ -65,7 +82,7 @@ namespace FESScript
 
         public static bool IsRunning { get; set; }
 
-        private BlockTemplateLoader blockTemplateLoader = new BlockTemplateLoader(Directories.Blocks);
+        private BlockTemplateLoader blockTemplateLoader = new BlockTemplateLoader(null);
 
         private bool CanZoom {  get; set; }
 
@@ -120,22 +137,16 @@ namespace FESScript
             IsRunning = true;
             Closed += OnClosed;
 
-            BlockTemplate blockTemplate = new BlockTemplate(
-                    new System.Collections.ObjectModel.ObservableCollection<DotTemplate>()
-                    {
-                        new DotTemplate(Type.Numerical, IO.Output, 4),
-                        new DotTemplate(Type.SubAction, IO.Output, 1),
-                        new DotTemplate(Type.Action   , IO.Input, 2),
-                        new DotTemplate(Type.Console  , IO.Input, 3),
-                    },
-                    new System.Collections.ObjectModel.ObservableCollection<ContentTemplate>()
-                    {
-                        new ContentTemplate(typeof(TextBox), 5, value:new StringArgs("Pche")),
-                        new ContentTemplate(typeof(CheckBox), 6, value:new BoolArgs(true)),
-                        new ContentTemplate(typeof(TextLabel), 7, value:new StringArgs("Ahojky")),
-                        new ContentTemplate(typeof(Combobox), 8, value:new ComboBoxArgs(["Hi", "Hey", "Hate you!", "I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you!"], -1)),
-                    },
-                    Type.SubAction);
+            BlockTemplate blockTemplate = BlockTemplate.CreateEmptyTemplate();
+            blockTemplate.AddDot(new DotTemplate(blockTemplate, Type.Numerical, IO.Output, 4));
+            blockTemplate.AddDot(new DotTemplate(blockTemplate, Type.SubAction, IO.Output, 1));
+            blockTemplate.AddDot(new DotTemplate(blockTemplate, Type.Action, IO.Input, 2));
+            blockTemplate.AddDot(new DotTemplate(blockTemplate, Type.Console, IO.Input, 3));
+            blockTemplate.AddContent(new ContentTemplate(blockTemplate, typeof(TextBox), 5, value: new StringArgs("Pche")));
+            blockTemplate.AddContent(new ContentTemplate(blockTemplate, typeof(CheckBox), 6, value: new BoolArgs(true)));
+            blockTemplate.AddContent(new ContentTemplate(blockTemplate, typeof(TextLabel), 7, value: new StringArgs("Ahojky")));
+            blockTemplate.AddContent(new ContentTemplate(blockTemplate, typeof(Combobox), 8, value: new ComboBoxArgs(["Hi", "Hey", "Hate you!", "I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you! I Love you! I Hate you!"], -1)));
+            blockTemplate.Type = Type.Action;
 
             BlockPlacement x = new BlockPlacement(
                 blockTemplate,
@@ -269,6 +280,11 @@ namespace FESScript
             {
                 CanZoom = false;
             }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

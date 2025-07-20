@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Xml;
-using System.Xml.Serialization;
 using FESScript.CodeWorks.BlockCreation.Blocks;
 using FESScript.CodeWorks.BlockCreation.Blocks.Templates;
 using FESScript.CodeWorks.BlockCreation.Blocks.Placements;
 using FESScript.CodeWorks.BlockCreation.Blocks.UserElements;
-using FESScript.Graphics.UserControls.Connecting;
-using FESScript.Settings;
+using Microsoft.Win32;
+using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
+using FESScript.Graphics.UserControls;
 
 namespace FESScript.CodeWorks.Saving
 {
@@ -20,33 +20,24 @@ namespace FESScript.CodeWorks.Saving
     {
         private static Dictionary<int, BlockPlacement> blockPlacements = new Dictionary<int, BlockPlacement>();
 
-        public static void LoadProject(string fileName, MainWindow mainWindow)
+        public static void LoadProject(string path, MainWindow mainWindow)
         {
             BlockPlacement.RemoveAll();
 
-            string DirUri = Directories.Projects + @$"\{fileName}";
-            string FileUri = DirUri + @"\Save.FESSave";
-
-            Directory.CreateDirectory(DirUri);
-
-
-            if (File.Exists(FileUri))
+            if (File.Exists(path))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(SaveProjectData));
-                XmlReader reader = XmlReader.Create(FileUri);
                 try 
-                { 
-                    SaveProjectData projectData = (SaveProjectData)serializer.Deserialize(reader);
+                {
+                    SaveProjectData projectData = JsonSerializer.Deserialize<SaveProjectData>(File.ReadAllText(path));
 
                     LoadProject(projectData, mainWindow);
 
                     App.Window.UpdateGlobalPosition();
                 }
-                catch 
+                catch
                 { 
                     MessageBox.Show("Save file data is invalid.", "Error", MessageBoxButton.OK);
                 }
-                reader.Close();
             }
             else
             {

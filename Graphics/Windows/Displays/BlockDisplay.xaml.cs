@@ -54,24 +54,28 @@ namespace FESScript.Graphics.Windows.Displays
 
         private void AddDotClick(object sender, RoutedEventArgs e)
         {
-            this.BlockTemplate.Dots.Add(new DotTemplate());
-            this.BlockTemplate.Update();
+            var template = new DotTemplate(BlockTemplate);
+            this.BlockTemplate.Dots.Add(template);
+            this.BlockTemplate.Update(template, new PropertyChangedEventArgs(template.ID.ToString()));
         }
         private void AddContentClick(object sender, RoutedEventArgs e)
         {
-            this.BlockTemplate.Contents.Add(new ContentTemplate() { Parent = BlockTemplate });
-            this.BlockTemplate.Update();
+            var template = new ContentTemplate(BlockTemplate);
+            this.BlockTemplate.Contents.Add(template);
+            this.BlockTemplate.Update(template, new PropertyChangedEventArgs(template.ID.ToString()));
         }
 
         private void DotDelete(object sender, RoutedEventArgs e)
         {
-            this.BlockTemplate.Dots.Remove((sender as Button).DataContext as DotTemplate);
-            this.BlockTemplate.Update();
+            var template = (sender as Button).DataContext as DotTemplate;
+            this.BlockTemplate.Dots.Remove(template);
+            this.BlockTemplate.Update(template, new PropertyChangedEventArgs(template.ID.ToString()));
         }
         private void ContentDelete(object sender, RoutedEventArgs e)
         {
+            ContentTemplate template = (sender as Button).DataContext as ContentTemplate;
             this.BlockTemplate.Contents.Remove((sender as Button).DataContext as ContentTemplate);
-            this.BlockTemplate.Update();
+            this.BlockTemplate.Update(template, new PropertyChangedEventArgs(template.ID.ToString()));
         }
 
         private void EditDot(object sender, RoutedEventArgs e)
@@ -107,18 +111,3 @@ namespace FESScript.Graphics.Windows.Displays
         }
     }
 }
-
-/*
-    [XmlAttribute] public int ID { get; set; }
-
-    [XmlAttribute] public string Name { get; set; }
-    public string Description { get; set; }
-
-    [XmlAttribute] public Type Type { get; set; }
-
-    public string InFunctionBodyCode { get; set; }
-    public string InLineBodyCode { get; set; }
-
-    public List<DotTemplate> Dots { get; init; }
-    public List<ContentTemplate> Contents { get; init; }
- */
