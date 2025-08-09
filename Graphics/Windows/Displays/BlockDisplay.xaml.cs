@@ -103,7 +103,7 @@ namespace FESScript.Graphics.Windows.Displays
             try 
             { 
                 string code = BlockTemplate.InBlockCode;
-                string fileName = $"{BlockTemplate.Name.Replace(' ', '_')}.cs";
+                string fileName = $"{BlockTemplate.Name}.cs";
                 using (StreamWriter writer = new StreamWriter(fileName, new FileStreamOptions() { Mode = FileMode.OpenOrCreate, Access = FileAccess.Write, Share = FileShare.ReadWrite }))
                 {
                     writer.Write(code);
@@ -112,7 +112,7 @@ namespace FESScript.Graphics.Windows.Displays
                 {
                     FileName = fileName,
                     UseShellExecute = true,
-                    Verb = "edit",
+                    Verb = "open",
                 });
                 process.EnableRaisingEvents = true;
                 FileSystemWatcher watcher = new FileSystemWatcher()
@@ -129,6 +129,7 @@ namespace FESScript.Graphics.Windows.Displays
                     watcher.Dispose();
                     Debug.WriteLine($"File {fileName} closed, updating block code.");
                     SaveCode(s, new FileSystemEventArgs(WatcherChangeTypes.Changed, watcher.Path, watcher.Filter), fileName);
+                    File.Delete(fileName);
                 };
                 _watcher.Add(watcher);
                 watcher.Changed += (s, e) =>

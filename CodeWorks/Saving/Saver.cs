@@ -16,7 +16,7 @@ namespace FESScript.CodeWorks.Saving
         {
             try 
             { 
-                SaveProjectData projectData = new SaveProjectData(mainWindow.Zoom, App.Window.CameraPosition, blockPlacements, MainWindow.Version);
+                SaveProjectData projectData = new SaveProjectData(mainWindow.UserControlManager.Camera.GetZoom(), mainWindow.UserControlManager.Camera.CameraPosition, blockPlacements, MainWindow.Version);
 
                 using (Stream stream = File.Open(path, FileMode.Create)) 
                 { 

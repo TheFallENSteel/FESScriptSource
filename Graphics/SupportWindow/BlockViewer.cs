@@ -12,13 +12,14 @@ using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using FESScript.Graphics;
+using FESScript.CodeWorks.BlockCreation;
 
 namespace FESScript.Graphics.SupportWindow
 {
     public class BlockViewer : UserControl
     {
         const double animationAntiSpeed = 0.5;
-        BlockCreation.Category category;
+        Category category;
         Grid grid = new Grid();
         private ItemsControl itemsControl;
         DoubleAnimation doubleAnimationSecondPanel;
@@ -27,7 +28,7 @@ namespace FESScript.Graphics.SupportWindow
         Expander expander;
         public bool isShown;
 
-        public BlockCreation.Category currentCategory 
+        public CodeWorks.BlockCreation.Category currentCategory 
         {
             get 
             {
@@ -39,7 +40,7 @@ namespace FESScript.Graphics.SupportWindow
             }
         }
 
-        public BlockViewer(BlockCreation.Category category, Expander expander)
+        public BlockViewer(CodeWorks.BlockCreation.Category category, Expander expander)
         {
             this.expander = expander;
             Width = 0;
@@ -124,7 +125,7 @@ namespace FESScript.Graphics.SupportWindow
             storyboardSecondPanel.Begin(this);
         }
 
-        private void OnCategoryChange(BlockCreation.Category category) 
+        private void OnCategoryChange(CodeWorks.BlockCreation.Category category) 
         {
             currentCategory = category;
             ShowCategory();

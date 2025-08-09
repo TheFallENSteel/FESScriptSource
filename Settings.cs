@@ -21,6 +21,7 @@ namespace FESScript
 {
     public class Settings
     {
+        public const double Version = 3.0;
         private ICompiler _compiler;
         private ITranspiler _transpiler;
 

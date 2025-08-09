@@ -41,6 +41,7 @@
         <Border x:Name="topBorder" Background="LightGray" CornerRadius="25, 25, 0, 0" BorderBrush="Red"/>
         <Border x:Name="bottomBorder" Background="White" Grid.Row="1" BorderBrush="Red"/>
         <ContentControl Content="{Binding DataContent}" Grid.Row="1" Background="LightGray" Margin="15"/>
+        <Ellipse Fill="Red" Width="20" Height="20" x:Name="Close" MouseDown="Close_MouseDown" HorizontalAlignment="Right" Margin="15,0"/>
         <Grid.RowDefinitions>
             <RowDefinition Height="35"/>
             <RowDefinition/>

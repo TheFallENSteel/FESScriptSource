@@ -6,8 +6,9 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args
 {
     public struct ComboBoxArgs : IArgs
     {
-        public bool IsReadOnly { get; set;}
+        public bool IsReadOnly { get; set; }
         private string[] values;
+        [JsonIgnore]
         public string[] Values
         {
             get => values;
@@ -27,8 +28,9 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("SelectedIndex"));
             }
         }
-        [JsonIgnore] public int Value 
-        { 
+        [JsonIgnore]
+        public int Value
+        {
             get { return SelectedIndex; }
             set { SelectedIndex = value; }
         }
@@ -42,5 +44,14 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args
 
         public event PropertyChangedEventHandler PropertyChanged;
         public override string ToString() => nameof(ComboBox);
+        public void Set(IArgs args)
+        {
+            if (args is ComboBoxArgs comboBoxArgs)
+            {
+                IsReadOnly = comboBoxArgs.IsReadOnly;
+                if (comboBoxArgs.values != null) Values = comboBoxArgs.Values;
+                SelectedIndex = comboBoxArgs.SelectedIndex;
+            }
+        }
     }
 }

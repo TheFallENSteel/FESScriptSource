@@ -12,12 +12,13 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
 {
     public class BlockTemplate : IFindable, IInfo, IRemovable, INotifyPropertyChanged
     {
-        [JsonIgnore] private static Dictionary<int, BlockTemplate> BlockTemplates = new Dictionary<int, BlockTemplate>();
         private int iD;
         private string name;
         private string description;
         private Type type;
         private string inLineBodyCode;
+        public ObservableCollection<DotTemplate> Dots { get; set; }
+        public ObservableCollection<ContentTemplate> Contents { get; set; }
 
         public int ID 
         { 
@@ -60,6 +61,11 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
             }
         }
 
+        public void Update()
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(""));
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public string InBlockCode
         {
@@ -71,60 +77,6 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
             }
         }
 
-        public ObservableCollection<DotTemplate> Dots { get; init; }
-        public ObservableCollection<ContentTemplate> Contents { get; init; }
-
-        public void AddDot(DotTemplate dot)
-        {
-            Dots.Add(dot);
-            dot.Parent = this;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Dots)));
-        }
-        public void AddContent(ContentTemplate content)
-        {
-            Contents.Add(content);
-            content.Parent = this;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Contents)));
-        }
-        public void RemoveDot(DotTemplate dot)
-        {
-            Dots.Remove(dot);
-            dot.Parent = null;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Dots)));
-        }
-        public void RemoveContent(ContentTemplate content)
-        {
-            Contents.Remove(content);
-            content.Parent = null;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Contents)));
-        }
-        public BlockTemplate(ObservableCollection<DotTemplate> dots, ObservableCollection<ContentTemplate> contents, Type type, string name = "", string inLineBodyCode = null, string description = "")
-        {
-            this.Dots = dots;
-            this.Contents = contents;
-            this.InBlockCode = inLineBodyCode;
-            this.Name = name;
-            this.Type = type;
-            this.Description = description;
-            for (int i = 0; i < Dots.Count; i++)
-            {
-                Dots[0].Parent = this;
-            }
-            for (int i = 0; i < Contents.Count; i++)
-            {
-                Contents[i].Parent = this;
-            }
-            (this as IFindable).Register();
-            BlockTemplates.Add(ID, this);
-        }
-        public static BlockTemplate CreateEmptyTemplate() => 
-            new BlockTemplate(
-                new ObservableCollection<DotTemplate>(), 
-                new ObservableCollection<ContentTemplate>(), 
-                Type.Error, 
-                "New Template", 
-                "", 
-                "Empty description");
 
         public IFindable FindChild(int ID)
         {
@@ -153,13 +105,8 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Templates
         public void Remove()
         {
             (this as IFindable).UnRegister();
-            BlockTemplates.Remove(ID);
             Dots.Clear();
             Contents.Clear();
-        }
-        public static BlockTemplate GetTemplate(int id) 
-        { 
-            return BlockTemplates[id];
         }
     }
 }

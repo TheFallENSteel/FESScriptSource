@@ -39,7 +39,7 @@ namespace FESScript.Graphics.UserControls.SubUserControls
 
         private void ConsoleStart()
         {
-            App.Window.MainConsole = new FESScript.CodeWorks.Console.Console();
+            //App.Window.MainConsole = new FESScript.CodeWorks.Console.Console();
             //MainWindow.MainConsole.Show();
 
         }
@@ -60,7 +60,7 @@ namespace FESScript.Graphics.UserControls.SubUserControls
                 Filter = "FESScript Project Files (*.fess)|*.fess|All files (*.*)|*.*",
             };
             fileDialog.ShowDialog();
-            CodeWorks.Saving.Loader.LoadProject(fileDialog.FileName, App.Window);
+            CodeWorks.Saving.Loader.LoadProject(fileDialog.FileName, App.Window, App.Window.BlockTemplateManager);
         }
 
         private void StartClick(object sender, MouseButtonEventArgs e)
@@ -68,8 +68,8 @@ namespace FESScript.Graphics.UserControls.SubUserControls
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += async (s, args) =>
             {
-                await (args.Argument as MainWindow).CompileCode();
-                (args.Argument as MainWindow).ExecuteCode();
+                await (args.Argument as MainWindow).CodeExecutionManager.CompileCode(null); //TODO: Add StartBlock reference
+                (args.Argument as MainWindow).CodeExecutionManager.Run();
             };
             worker.RunWorkerAsync(App.Window);
         }

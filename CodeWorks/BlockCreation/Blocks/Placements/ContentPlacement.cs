@@ -12,7 +12,7 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Placements
     {
         public ContentTemplate ContentData { get; set; }
 
-        public int ID { get; set; }
+        public int ID { get => ContentData.ID; set => _ = value; }
         public IFindable Parent { get; set; }
         public string Name { get => ContentData.Name; }
         public string Description { get => ContentData.Description; }

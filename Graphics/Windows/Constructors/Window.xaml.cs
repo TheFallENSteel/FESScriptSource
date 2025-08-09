@@ -70,5 +70,10 @@ namespace FESScript.Graphics.Windows.Constructors
             WindowPlacement.Remove();
             DataContent = null;
         }
+
+        private void Close_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Delete();
+        }
     }
 }

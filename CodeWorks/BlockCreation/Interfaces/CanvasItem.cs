@@ -39,25 +39,27 @@ namespace FESScript.CodeWorks.BlockCreation.Interfaces
             }
             else
             {
-                Position = new Point(x + App.Window.CameraPosition.X, y + App.Window.CameraPosition.Y);
+                Point cameraPosition = (App.Current.MainWindow as MainWindow).UserControlManager.Camera.CameraPosition;
+                Position = new Point(x + cameraPosition.X, y + cameraPosition.Y);
             }
             DrawPosition();
         }
 
         public virtual void DrawPosition()
         {
-            Canvas.SetLeft(Item, Position.X - App.Window.CameraPosition.X);
-            Canvas.SetTop(Item, Position.Y - App.Window.CameraPosition.Y);
+            Point cameraPosition = (App.Current.MainWindow as MainWindow).UserControlManager.Camera.CameraPosition;
+            Canvas.SetLeft(Item, Position.X - cameraPosition.X);
+            Canvas.SetTop(Item, Position.Y - cameraPosition.Y);
             OnMove?.Invoke(null, null);
         }
 
         public virtual void EventSubscribe()
         {
-            Item.MouseDown += (o, e) => ((IMoveable)this).MouseDown(o, e);;
+            Item.MouseDown += (o, e) => ((IMoveable)this).MouseDown(o, e);
             Item.MouseMove += (o, e) => ((IMoveable)this).MouseMove(o, e);
             Item.SizeChanged += (_, _) => OnMove?.Invoke(null, null);
             Item.Focusable = true;
-            App.Window.CameraMoveEvent += (o, e) => ((IMoveable)this).Redraw(o, e);
+            (App.Current.MainWindow as MainWindow).UserControlManager.Camera.CameraMoveEvent += (o, e) => ((IMoveable)this).Redraw(o, e);
         }
 
         public void Show()

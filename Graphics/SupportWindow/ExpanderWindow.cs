@@ -22,7 +22,7 @@ namespace FESScript.Graphics.SupportWindow
         public ExpanderWindow(double height) 
         {
             ItemsControl itemsControl = new ItemsControl();
-            itemsControl.ItemsSource = BlockCreation.Category.categories;
+            itemsControl.ItemsSource = CodeWorks.BlockCreation.Category.categories;
             itemsControl.ItemTemplate = (DataTemplate)Application.Current.Resources["CategoryNameShower"];
             stackPanel = new StackPanel();
             itemsControl.IsTabStop = false;

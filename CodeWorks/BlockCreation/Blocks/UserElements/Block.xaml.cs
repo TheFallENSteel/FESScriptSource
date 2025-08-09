@@ -88,6 +88,7 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements
                 case "Reset":
                     BlockCommands.Reset(BlockPlacement);
                     break;
+                    break;
             }
         }
     }

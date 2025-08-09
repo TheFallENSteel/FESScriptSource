@@ -29,5 +29,14 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public void Set(IArgs args)
+        {
+            if (args is DoubleArgs doubleArgs)
+            {
+                IsReadOnly = doubleArgs.IsReadOnly;
+                Value = doubleArgs.Value;
+            }
+        }
     }
 }

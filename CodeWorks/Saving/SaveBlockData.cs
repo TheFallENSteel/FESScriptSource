@@ -41,18 +41,6 @@ namespace FESScript.CodeWorks.Saving
             Blocks = blockPlacements.Select(blockPlacement => new SaveBlockData(blockPlacement)).ToList();
         }
     }    
-    public struct SaveBlockTemplateData
-    {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public SaveBlockTemplateData(BlockTemplate blockTemplate) 
-        {
-            ID = blockTemplate.ID;
-            Name = blockTemplate.Name;
-            Description = blockTemplate.Description;
-        }
-    }
     public struct SaveDotTemplateData
     {
         public int ID { get; set; }
@@ -112,8 +100,8 @@ namespace FESScript.CodeWorks.Saving
         public IArgs Value { get; set; }
         public SaveContentData(ContentPlacement content) 
         { 
-            ID = content.ID;
-            Value = content.Value;
+            ID = content.ContentData.ID;
+            if(!content.Value.IsReadOnly) Value = content.Value;
         }
     }
 }

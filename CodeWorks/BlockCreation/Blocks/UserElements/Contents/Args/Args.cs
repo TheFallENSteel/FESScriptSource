@@ -15,5 +15,6 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.UserElements.Contents.Args
     public interface IArgs : INotifyPropertyChanged
     {
         public bool IsReadOnly { get; set; }
+        public void Set(IArgs args);
     }
 }

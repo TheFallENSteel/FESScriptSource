@@ -20,17 +20,16 @@ namespace FESScript.CodeWorks.Saving
     {
         private static Dictionary<int, BlockPlacement> blockPlacements = new Dictionary<int, BlockPlacement>();
 
-        public static void LoadProject(string path, MainWindow mainWindow)
+        public static void LoadProject(string path, MainWindow mainWindow, BlockTemplateManager blockTemplateManager)
         {
             BlockPlacement.RemoveAll();
-
             if (File.Exists(path))
             {
                 try 
                 {
                     SaveProjectData projectData = JsonSerializer.Deserialize<SaveProjectData>(File.ReadAllText(path));
 
-                    LoadProject(projectData, mainWindow);
+                    LoadProject(projectData, mainWindow, blockTemplateManager);
 
                     App.Window.UpdateGlobalPosition();
                 }
@@ -45,21 +44,25 @@ namespace FESScript.CodeWorks.Saving
             }
             blockPlacements.Clear();
         }
-        private static void LoadProject(SaveProjectData projectData, MainWindow mainWindow)
+        private static void LoadTemplates(BlockTemplateManager blockTemplateManager)
         {
-            mainWindow.Zoom = projectData.Zoom;
-            mainWindow.CameraPosition = new Point(projectData.CameraX, projectData.CameraY);
+            //blockTemplateManager.LoadTemplates();
+        }
+        private static void LoadProject(SaveProjectData projectData, MainWindow mainWindow, BlockTemplateManager blockTemplateManager)
+        {
+            mainWindow.UserControlManager.Camera.SetZoom(projectData.Zoom);
+            mainWindow.UserControlManager.Camera.CameraPosition = new Point(projectData.CameraX, projectData.CameraY);
 
             for (int i = 0; i < projectData.Blocks.Count; i++)
             {
-                LoadBlock(projectData.Blocks[i]);
+                LoadBlock(projectData.Blocks[i], blockTemplateManager);
             }
         }
 
-        private static void LoadBlock(SaveBlockData blockData)
+        private static void LoadBlock(SaveBlockData blockData, BlockTemplateManager blockTemplateManager)
         {
 
-            BlockPlacement blockPlacement = new BlockPlacement(BlockTemplate.GetTemplate(blockData.BlockTemplateID), null, App.Window.mainCanvas);
+            BlockPlacement blockPlacement = new BlockPlacement(blockTemplateManager.GetTemplateById(blockData.BlockTemplateID), null, App.Window.mainCanvas);
             LoadProperties(blockData, ref blockPlacement);
             LoadContentsData(blockData.ContentData, ref blockPlacement);
             LoadDotConnections(blockData.DotData, ref blockPlacement);
@@ -106,7 +109,7 @@ namespace FESScript.CodeWorks.Saving
             try 
             { 
                 ContentPlacement contentPlacement = blockPlacement.FindContent(contentData.ID);
-                contentPlacement.Value = contentData.Value;
+                contentPlacement.Value.Set(contentData.Value);
             }
             catch { }
         }

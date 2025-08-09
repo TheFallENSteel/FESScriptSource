@@ -81,8 +81,7 @@
             <MenuItem Header="DeleteBlock" Click="MenuItem_Click"/>
             <MenuItem Header="Duplicate" Click="MenuItem_Click"/>
             <MenuItem Header="Reset" Click="MenuItem_Click"/>
-
-            <MenuItem/>
+            <MenuItem Header="Edit" Click="MenuItem_Click"/>
         </ContextMenu>
     </UserControl.ContextMenu>
 </UserControl>

@@ -32,7 +32,7 @@ namespace FESScript.CodeWorks.BlockCreation.Blocks.Placements
 
         public IFindable FindChild(int ID) => BlockTemplate.FindChild(ID);
         public DotPlacement FindDot(int ID) => DotPlacements.Find((dot) => dot.ID == ID);
-        public ContentPlacement FindContent(int ID) => ContentPlacements.Find((content) => content.ID == ID);
+        public ContentPlacement FindContent(int ID) => ContentPlacements.Find((content) => content.ContentData.ID == ID);
 
         public List<DotPlacement> DotPlacements { get; set; } = new List<DotPlacement>();
         public List<ContentPlacement> ContentPlacements { get; set; } = new List<ContentPlacement> { };
